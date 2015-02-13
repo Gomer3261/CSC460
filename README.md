@@ -1,2 +1,2 @@
-# SENG460
-Different Programming Milestones for SENG 460 at UVic
+# CSC460
+Different Programming Milestones for CSC 460 at UVic
