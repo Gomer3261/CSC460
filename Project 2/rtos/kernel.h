@@ -94,7 +94,7 @@ typedef struct td_struct task_descriptor_t;
 struct td_struct
 {
     /** The stack used by the task. SP points in here when task is RUNNING. */
-    uint8_t                         stack[WORKSPACE];
+    uint8_t                         stack[MAXSTACK];
     /** A variable to save the hardware SP into when the task is suspended. */
     uint8_t*               volatile sp;   /* stack pointer into the "workSpace" */
     /** PERIODIC tasks need a name in the PPP array. */

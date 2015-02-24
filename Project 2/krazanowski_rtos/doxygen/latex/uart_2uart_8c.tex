@@ -1,0 +1,40 @@
+\section{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/uart/uart.c File Reference}
+\label{uart_2uart_8c}\index{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/uart/uart.c@{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/uart/uart.c}}
+{\tt \#include \char`\"{}uart.h\char`\"{}}\par
+{\tt \#include $<$string.h$>$}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf uart\_\-init} (void)
+\item 
+int {\bf uart\_\-write} (uint8\_\-t $\ast$const str, int len)
+\item 
+{\bf ISR} (USART1\_\-UDRE\_\-vect)
+\end{CompactItemize}
+
+
+\subsection{Function Documentation}
+\index{uart/uart.c@{uart/uart.c}!ISR@{ISR}}
+\index{ISR@{ISR}!uart/uart.c@{uart/uart.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}ISR (USART1\_\-UDRE\_\-vect)}\label{uart_2uart_8c_d6441110baf548d12ae53fcbed8075c5}
+
+
+Interrupt service routine for the UART transmission. \index{uart/uart.c@{uart/uart.c}!uart_init@{uart\_\-init}}
+\index{uart_init@{uart\_\-init}!uart/uart.c@{uart/uart.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void uart\_\-init (void)}\label{uart_2uart_8c_0c0ca72359ddf28dcd15900dfba19343}
+
+
+Initialize UART \index{uart/uart.c@{uart/uart.c}!uart_write@{uart\_\-write}}
+\index{uart_write@{uart\_\-write}!uart/uart.c@{uart/uart.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int uart\_\-write (uint8\_\-t $\ast$const  {\em str}, int {\em len})}\label{uart_2uart_8c_2f98501ce8efc928a596b54a157cc3f0}
+
+
+Copies a string into a buffer for the Uart interrupt handler to write to the terminal. If overflow occurs, older data is overwritten.
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em str}]The string you want to send to the UART hyperterminal. \item[{\em len}]length of the string\end{description}
+\end{Desc}
+\begin{Desc}
+\item[Returns:]-1 if overflow occurred. \end{Desc}

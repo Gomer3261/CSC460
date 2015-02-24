@@ -8,7 +8,7 @@ avr-gcc -Wall -O2 -DF_CPU=16000000UL -mmcu=atmega2560 -c main.c -o main.o
 avr-gcc -Wall -O2 -DF_CPU=16000000UL -mmcu=atmega2560 -c os.c -o os.o
 
 echo "Link..."
-avr-gcc -Wall -O2 -DF_CPU=16000000UL -mmcu=atmega2560 -o main.elf main.o
+avr-gcc -Wall -O2 -DF_CPU=16000000UL -mmcu=atmega2560 -o main.elf os.o main.o
 
 echo "Make HEX..."
 avr-objcopy -j .text -j .data -O ihex main.elf main.hex

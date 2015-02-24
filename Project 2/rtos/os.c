@@ -17,6 +17,26 @@
 #include "kernel.h"
 #include "error_code.h"
 
+#define USE_AVR2560_GREATER 1
+
+/* The stack grows down in memory, so the stack pointer is going to end up
+     * pointing to the location 32 + 1 + 2 + 2 = 37 bytes above the bottom, to make
+     * room for (from bottom to top):
+     *   the address of Task_Terminate() to destroy the task if it ever returns,
+     *   the address of the start of the task to "return" to the first time it runs,
+     *   register 31,
+     *   the stored EIND (for 2560), and
+     *   the stored SREG, and
+     *   registers 30 to 0.
+     */
+#if USE_AVR2560_GREATER
+    #define STACKCONTEXTSIZE (32 + 1 + 1 + 3 + 3)
+    #define KERNELARG_STACKOFFSET (32 + 1 + 1 + 1)
+#else
+    #define STACKCONTEXTSIZE (32 + 1 + 2 + 2)
+    #define KERNELARG_STACKOFFSET (32 + 1 + 1)
+#endif
+
 /* Needed for memset */
 /* #include <string.h> */
 
@@ -86,7 +106,7 @@ static void kernel_handle_request(void);
 /* context switching */
 static void exit_kernel(void) __attribute((noinline, naked));
 static void enter_kernel(void) __attribute((noinline, naked));
-extern "C" void TIMER1_COMPA_vect(void) __attribute__ ((signal, naked));
+extern /*"C"*/ void TIMER1_COMPA_vect(void) __attribute__ ((signal, naked));
 
 static int kernel_create_task();
 static void kernel_terminate_task(void);
@@ -272,10 +292,10 @@ static void kernel_handle_request(void)
     case TASK_GET_ARG:
         /* Should not happen. Handled in task itself. */
         break;
-		
+
     default:
         /* Should never happen */
-        error_msg = ERR_RUN_8_RTOS_INTERNAL_ERROR;
+        error_msg = ERR_RUN_5_RTOS_INTERNAL_ERROR;
         OS_Abort();
         break;
     }
@@ -296,10 +316,19 @@ static void kernel_handle_request(void)
  * the rest of the registers on the stack. In the locations this macro
  * is used, the interrupts need to be disabled, or they already are disabled.
  */
+#if USE_AVR2560_GREATER
+#define    SAVE_CTX_TOP()       asm volatile (\
+    "push   r31             \n\t"\
+    "in     r31,0X3C        \n\t"\
+    "push   r31             \n\t"\
+    "in     r31,__SREG__    \n\t"\
+    "cli                    \n\t"::); /* Disable interrupt */
+#else
 #define    SAVE_CTX_TOP()       asm volatile (\
     "push   r31             \n\t"\
     "in     r31,__SREG__    \n\t"\
     "cli                    \n\t"::); /* Disable interrupt */
+#endif
 
 #define STACK_SREG_SET_I_BIT()    asm volatile (\
     "ori    r31, 0x80        \n\t"::);
@@ -343,10 +372,7 @@ static void kernel_handle_request(void)
  */
 #define    SAVE_CTX()    SAVE_CTX_TOP();SAVE_CTX_BOTTOM();
 
-/**
- * @brief Pop all registers and the status register.
- */
-#define    RESTORE_CTX()    asm volatile (\
+#define    RESTORE_CTX_BOTTOM()    asm volatile (\
     "pop    r0                \n\t"\
     "pop    r1                \n\t"\
     "pop    r2                \n\t"\
@@ -377,11 +403,26 @@ static void kernel_handle_request(void)
     "pop    r27             \n\t"\
     "pop    r28             \n\t"\
     "pop    r29             \n\t"\
-    "pop    r30             \n\t"\
-    "pop    r31             \n\t"\
-	"out    __SREG__, r31    \n\t"\
-    "pop    r31             \n\t"::);
+    "pop    r30             \n\t"::);
 
+#if USE_AVR2560_GREATER
+#define    RESTORE_CTX_TOP()    asm volatile (\
+    "pop    r31             \n\t"\
+    "out    __SREG__, r31   \n\t"\
+    "pop    r31             \n\t"\
+    "out    0X3C, r31       \n\t"\
+    "pop    r31             \n\t"::);
+#else
+#define    RESTORE_CTX_TOP()    asm volatile (\
+    "pop    r31             \n\t"\
+    "out    __SREG__, r31    \n\t"\
+    "pop    r31             \n\t"::);
+#endif
+
+/**
+ * @brief Pop all registers and the status register.
+ */
+#define    RESTORE_CTX()    RESTORE_CTX_BOTTOM();RESTORE_CTX_TOP();
 
 /**
  * @fn exit_kernel
@@ -610,7 +651,7 @@ static int kernel_create_task()
 	    p = dequeue(&dead_pool_queue);
 	}
 
-    stack_bottom = &(p->stack[WORKSPACE-1]);
+    stack_bottom = &(p->stack[MAXSTACK-1]);
 
     /* The stack grows down in memory, so the stack pointer is going to end up
      * pointing to the location 32 + 1 + 2 + 2 = 37 bytes above the bottom, to make
@@ -621,7 +662,16 @@ static int kernel_create_task()
      *   the stored SREG, and
      *   registers 30 to 0.
      */
-    uint8_t* stack_top = stack_bottom - (32 + 1 + 2 + 2);
+    uint8_t* stack_top = stack_bottom - STACKCONTEXTSIZE;
+
+    int i = 0;
+    for( i=0; i < 31; i++ )
+    {
+        stack_top[i] = i;
+    }
+    stack_top[31] = 0x55;
+    stack_top[32] = 0xEE;
+    stack_top[33] = 31;
 
     /* Not necessary to clear the task descriptor. */
     /* memset(p,0,sizeof(task_descriptor_t)); */
@@ -630,7 +680,7 @@ static int kernel_create_task()
      * stack_top[1] is r0. */
     stack_top[2] = (uint8_t) 0; /* r1 is the "zero" register. */
     /* stack_top[31] is r30. */
-    stack_top[32] = (uint8_t) _BV(SREG_I); /* set SREG_I bit in stored SREG. */
+    stack_top[33] = (uint8_t) _BV(SREG_I); /* set SREG_I bit in stored SREG. */
     /* stack_top[33] is r31. */
 
     /* We are placing the address (16-bit) of the functions
@@ -639,10 +689,19 @@ static int kernel_create_task()
      * (ret and reti) pop addresses off in BIG ENDIAN (most sig. first, least sig.
      * second), even though the AT90 is LITTLE ENDIAN machine.
      */
-    stack_top[34] = (uint8_t)((uint16_t)(kernel_request_create_args.f) >> 8);
-    stack_top[35] = (uint8_t)(uint16_t)(kernel_request_create_args.f);
-    stack_top[36] = (uint8_t)((uint16_t)Task_Terminate >> 8);
-    stack_top[37] = (uint8_t)(uint16_t)Task_Terminate;
+#if USE_AVR2560_GREATER
+    stack_top[KERNELARG_STACKOFFSET+0] = (uint8_t)(0);
+    stack_top[KERNELARG_STACKOFFSET+1] = (uint8_t)((uint16_t)(kernel_request_create_args.f) >> 8);
+    stack_top[KERNELARG_STACKOFFSET+2] = (uint8_t)(uint16_t)(kernel_request_create_args.f);
+    stack_top[KERNELARG_STACKOFFSET+3] = (uint8_t)(0);
+    stack_top[KERNELARG_STACKOFFSET+4] = (uint8_t)((uint16_t)Task_Terminate >> 8);
+    stack_top[KERNELARG_STACKOFFSET+5] = (uint8_t)(uint16_t)Task_Terminate;
+#else
+    stack_top[KERNELARG_STACKOFFSET+0] = (uint8_t)((uint16_t)(kernel_request_create_args.f) >> 8);
+    stack_top[KERNELARG_STACKOFFSET+1] = (uint8_t)(uint16_t)(kernel_request_create_args.f);
+    stack_top[KERNELARG_STACKOFFSET+2] = (uint8_t)((uint16_t)Task_Terminate >> 8);
+    stack_top[KERNELARG_STACKOFFSET+3] = (uint8_t)(uint16_t)Task_Terminate;
+#endif
 
     /*
      * Make stack pointer point to cell above stack (the top).

@@ -1,0 +1,51 @@
+\section{create\_\-args\_\-t Struct Reference}
+\label{structcreate__args__t}\index{create_args_t@{create\_\-args\_\-t}}
+The arguments required to create a task.  
+
+
+{\tt \#include $<$kernel.h$>$}
+
+\subsection*{Data Fields}
+\begin{CompactItemize}
+\item 
+{\bf voidfuncvoid\_\-ptr} {\bf f}
+\item 
+int {\bf arg}
+\item 
+uint8\_\-t {\bf level}
+\item 
+uint8\_\-t {\bf name}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+The arguments required to create a task. 
+
+
+
+\subsection{Field Documentation}
+\index{create_args_t@{create\_\-args\_\-t}!arg@{arg}}
+\index{arg@{arg}!create_args_t@{create\_\-args\_\-t}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int {\bf create\_\-args\_\-t::arg}}\label{structcreate__args__t_d31b4b2358ca1aff8fc2457628330ae7}
+
+
+A new task may be created with an argument that it can retrieve later. \index{create_args_t@{create\_\-args\_\-t}!f@{f}}
+\index{f@{f}!create_args_t@{create\_\-args\_\-t}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf voidfuncvoid\_\-ptr} {\bf create\_\-args\_\-t::f}}\label{structcreate__args__t_972618840a815fc7c7b0a0107e65e625}
+
+
+The code the new task is to run. \index{create_args_t@{create\_\-args\_\-t}!level@{level}}
+\index{level@{level}!create_args_t@{create\_\-args\_\-t}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t {\bf create\_\-args\_\-t::level}}\label{structcreate__args__t_76db650f9bfb5f1ce63e251ce92925ba}
+
+
+Priority of the new task: RR, PERIODIC, SYSTEM \index{create_args_t@{create\_\-args\_\-t}!name@{name}}
+\index{name@{name}!create_args_t@{create\_\-args\_\-t}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t {\bf create\_\-args\_\-t::name}}\label{structcreate__args__t_672ed1debd4dda6dfe67983ca30de527}
+
+
+If the new task is PERIODIC, this is its name in the PPP array. 
+
+The documentation for this struct was generated from the following file:\begin{CompactItemize}
+\item 
+N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/OS/{\bf kernel.h}\end{CompactItemize}

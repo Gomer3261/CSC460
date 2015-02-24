@@ -1,0 +1,279 @@
+\section{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/OS/Mikes\-Profiler.h File Reference}
+\label{_mikes_profiler_8h}\index{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/OS/MikesProfiler.h@{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/OS/MikesProfiler.h}}
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define {\bf PROFILECODE}~1
+\item 
+\#define {\bf PROFILE\_\-DATADIRECTIONREGISTER}~DDRC
+\item 
+\#define {\bf PROFILE\_\-OUTPORT}~PORTC
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN0}~PINC0
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN1}~PINC1
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN2}~PINC2
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN3}~PINC3
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN4}~PINC4
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN5}~PINC5
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN6}~PINC6
+\item 
+\#define {\bf PROFILE\_\-OUT\_\-PIN7}~PINC7
+\item 
+\#define {\bf Initialize\-Logic\-Analyzer\-Profiler}()~\{ PROFILE\_\-DATADIRECTIONREGISTER $|$= 0xff; \}
+\item 
+\#define {\bf Enable\-Profile\-Sample1}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN0)); \}
+\item 
+\#define {\bf Enable\-Profile\-Sample2}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN1)); \}
+\item 
+\#define {\bf Enable\-Profile\-Sample3}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN2)); \}
+\item 
+\#define {\bf Enable\-Profile\-Sample4}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN3)); \}
+\item 
+\#define {\bf Enable\-Profile\-Sample5}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN4)); \}
+\item 
+\#define {\bf Enable\-Profile\-Sample6}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN5)); \}
+\item 
+\#define {\bf Enable\-Profile\-Sample7}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN6)); \}
+\item 
+\#define {\bf Enable\-Profile\-Sample8}()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN7)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample1}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN0)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample2}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN1)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample3}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN2)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample4}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN3)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample5}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN4)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample6}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN5)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample7}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN6)); \}
+\item 
+\#define {\bf Disable\-Profile\-Sample8}()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN7)); \}
+\item 
+\#define {\bf Profile\-Blip}(a)
+\item 
+\#define {\bf Profile1}()~Profile\-Blip(1)
+\item 
+\#define {\bf Profile2}()~Profile\-Blip(2)
+\item 
+\#define {\bf Profile3}()~Profile\-Blip(3)
+\item 
+\#define {\bf Profile4}()~Profile\-Blip(4)
+\item 
+\#define {\bf Profile5}()~Profile\-Blip(5)
+\item 
+\#define {\bf Profile6}()~Profile\-Blip(6)
+\item 
+\#define {\bf Profile7}()~Profile\-Blip(7)
+\item 
+\#define {\bf Profile8}()~Profile\-Blip(8)
+\end{CompactItemize}
+
+
+\subsection{Define Documentation}
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample1@{DisableProfileSample1}}
+\index{DisableProfileSample1@{DisableProfileSample1}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample1()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN0)); \}}\label{_mikes_profiler_8h_8764512136d69d5468fd487c2c5ec2d6}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample2@{DisableProfileSample2}}
+\index{DisableProfileSample2@{DisableProfileSample2}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample2()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN1)); \}}\label{_mikes_profiler_8h_12b88b6fd86b8e2f2f3abb9fec4e52b1}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample3@{DisableProfileSample3}}
+\index{DisableProfileSample3@{DisableProfileSample3}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample3()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN2)); \}}\label{_mikes_profiler_8h_21d289055083387edd460d07d6adc4f3}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample4@{DisableProfileSample4}}
+\index{DisableProfileSample4@{DisableProfileSample4}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample4()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN3)); \}}\label{_mikes_profiler_8h_dd5747c25fe91e0c5f337317e533ca06}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample5@{DisableProfileSample5}}
+\index{DisableProfileSample5@{DisableProfileSample5}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample5()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN4)); \}}\label{_mikes_profiler_8h_433493b20bfdef8744fb839c1bb235e1}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample6@{DisableProfileSample6}}
+\index{DisableProfileSample6@{DisableProfileSample6}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample6()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN5)); \}}\label{_mikes_profiler_8h_93af53e69632c42cd93a1b9d4fa9635b}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample7@{DisableProfileSample7}}
+\index{DisableProfileSample7@{DisableProfileSample7}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample7()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN6)); \}}\label{_mikes_profiler_8h_72b3c95f78e72320fbe1d0c55ad686b2}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!DisableProfileSample8@{DisableProfileSample8}}
+\index{DisableProfileSample8@{DisableProfileSample8}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Disable\-Profile\-Sample8()~\{ PROFILE\_\-OUTPORT \&= $\sim$(\_\-BV(PROFILE\_\-OUT\_\-PIN7)); \}}\label{_mikes_profiler_8h_4c2664bac9a75ca92609d595c67d1db8}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample1@{EnableProfileSample1}}
+\index{EnableProfileSample1@{EnableProfileSample1}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample1()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN0)); \}}\label{_mikes_profiler_8h_092693848f337ee059aa0c14fb8ea4d6}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample2@{EnableProfileSample2}}
+\index{EnableProfileSample2@{EnableProfileSample2}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample2()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN1)); \}}\label{_mikes_profiler_8h_785985e69255ccd179e425555932758b}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample3@{EnableProfileSample3}}
+\index{EnableProfileSample3@{EnableProfileSample3}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample3()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN2)); \}}\label{_mikes_profiler_8h_2c836eabf54380d3f21bfe565f058519}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample4@{EnableProfileSample4}}
+\index{EnableProfileSample4@{EnableProfileSample4}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample4()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN3)); \}}\label{_mikes_profiler_8h_7c0f9b577e07db6375abc03bcf351844}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample5@{EnableProfileSample5}}
+\index{EnableProfileSample5@{EnableProfileSample5}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample5()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN4)); \}}\label{_mikes_profiler_8h_4397139ebc9eaac053d3c6139a0f8e57}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample6@{EnableProfileSample6}}
+\index{EnableProfileSample6@{EnableProfileSample6}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample6()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN5)); \}}\label{_mikes_profiler_8h_b841a3c0e902405faea57bcf6b08e890}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample7@{EnableProfileSample7}}
+\index{EnableProfileSample7@{EnableProfileSample7}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample7()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN6)); \}}\label{_mikes_profiler_8h_f8c598b508c3edb39cbe20008f37b2ab}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!EnableProfileSample8@{EnableProfileSample8}}
+\index{EnableProfileSample8@{EnableProfileSample8}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Enable\-Profile\-Sample8()~\{ PROFILE\_\-OUTPORT $|$= (\_\-BV(PROFILE\_\-OUT\_\-PIN7)); \}}\label{_mikes_profiler_8h_8a55d464155a4a8d2e6246a6a506ac1e}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!InitializeLogicAnalyzerProfiler@{InitializeLogicAnalyzerProfiler}}
+\index{InitializeLogicAnalyzerProfiler@{InitializeLogicAnalyzerProfiler}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Initialize\-Logic\-Analyzer\-Profiler()~\{ PROFILE\_\-DATADIRECTIONREGISTER $|$= 0xff; \}}\label{_mikes_profiler_8h_3c1bdf730899f75a9f3c14bbbc033aeb}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile1@{Profile1}}
+\index{Profile1@{Profile1}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile1()~Profile\-Blip(1)}\label{_mikes_profiler_8h_67196d7d24e20e78e932c8eb6c328cb0}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile2@{Profile2}}
+\index{Profile2@{Profile2}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile2()~Profile\-Blip(2)}\label{_mikes_profiler_8h_e2702d5b12432ab551b3126cc772b6d1}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile3@{Profile3}}
+\index{Profile3@{Profile3}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile3()~Profile\-Blip(3)}\label{_mikes_profiler_8h_1a0b5f463dd95f4db52d9a6485113c76}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile4@{Profile4}}
+\index{Profile4@{Profile4}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile4()~Profile\-Blip(4)}\label{_mikes_profiler_8h_287b371804ea9f6b4b127e8d7a7a9691}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile5@{Profile5}}
+\index{Profile5@{Profile5}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile5()~Profile\-Blip(5)}\label{_mikes_profiler_8h_eb8409e6c4b72a711b1945d086fd01ac}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile6@{Profile6}}
+\index{Profile6@{Profile6}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile6()~Profile\-Blip(6)}\label{_mikes_profiler_8h_c09f2cc8b7b5fc1e5528b808d917d5a5}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile7@{Profile7}}
+\index{Profile7@{Profile7}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile7()~Profile\-Blip(7)}\label{_mikes_profiler_8h_c9ef4f7a396338aa7bd4d5beb977ceaf}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!Profile8@{Profile8}}
+\index{Profile8@{Profile8}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile8()~Profile\-Blip(8)}\label{_mikes_profiler_8h_b24194ec3b8aa769ad0d132ed386fe8a}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_DATADIRECTIONREGISTER@{PROFILE\_\-DATADIRECTIONREGISTER}}
+\index{PROFILE_DATADIRECTIONREGISTER@{PROFILE\_\-DATADIRECTIONREGISTER}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-DATADIRECTIONREGISTER~DDRC}\label{_mikes_profiler_8h_f24412a46d7d1f77b757afbf878c3866}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN0@{PROFILE\_\-OUT\_\-PIN0}}
+\index{PROFILE_OUT_PIN0@{PROFILE\_\-OUT\_\-PIN0}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN0~PINC0}\label{_mikes_profiler_8h_cf28cbfe275727e57b1d622f60f7a519}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN1@{PROFILE\_\-OUT\_\-PIN1}}
+\index{PROFILE_OUT_PIN1@{PROFILE\_\-OUT\_\-PIN1}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN1~PINC1}\label{_mikes_profiler_8h_55bd5a4349429827a3be022ccdb60559}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN2@{PROFILE\_\-OUT\_\-PIN2}}
+\index{PROFILE_OUT_PIN2@{PROFILE\_\-OUT\_\-PIN2}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN2~PINC2}\label{_mikes_profiler_8h_13146e4995a8969c007a97e4984d6c95}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN3@{PROFILE\_\-OUT\_\-PIN3}}
+\index{PROFILE_OUT_PIN3@{PROFILE\_\-OUT\_\-PIN3}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN3~PINC3}\label{_mikes_profiler_8h_725149e7d169a9a37884f93bac6f3dc0}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN4@{PROFILE\_\-OUT\_\-PIN4}}
+\index{PROFILE_OUT_PIN4@{PROFILE\_\-OUT\_\-PIN4}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN4~PINC4}\label{_mikes_profiler_8h_d53e5ce0efc69d7b4209265b6859d942}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN5@{PROFILE\_\-OUT\_\-PIN5}}
+\index{PROFILE_OUT_PIN5@{PROFILE\_\-OUT\_\-PIN5}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN5~PINC5}\label{_mikes_profiler_8h_9ea10a66c6542f93799ce7afc8fabb0f}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN6@{PROFILE\_\-OUT\_\-PIN6}}
+\index{PROFILE_OUT_PIN6@{PROFILE\_\-OUT\_\-PIN6}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN6~PINC6}\label{_mikes_profiler_8h_17fa35995091e6451f5232878e0729f6}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUT_PIN7@{PROFILE\_\-OUT\_\-PIN7}}
+\index{PROFILE_OUT_PIN7@{PROFILE\_\-OUT\_\-PIN7}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUT\_\-PIN7~PINC7}\label{_mikes_profiler_8h_c20605bf88d9cf501bf895905a671e20}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILE_OUTPORT@{PROFILE\_\-OUTPORT}}
+\index{PROFILE_OUTPORT@{PROFILE\_\-OUTPORT}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILE\_\-OUTPORT~PORTC}\label{_mikes_profiler_8h_4739301a095b58b54a0a927307bb7acc}
+
+
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!ProfileBlip@{ProfileBlip}}
+\index{ProfileBlip@{ProfileBlip}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define Profile\-Blip(a)}\label{_mikes_profiler_8h_331f4da7f556eb8b25edda808ebf0fdb}
+
+
+{\bf Value:}
+
+\footnotesize\begin{verbatim}{                       \
+EnableProfileSample##a();                       \
+        volatile count = 0;                             \
+        for( int i = 0; i < 2; i++ )    \
+        {                                                               \
+                count++;                                        \
+        }                                                               \
+DisableProfileSample##a();                      \
+}
+\end{verbatim}\normalsize 
+\index{MikesProfiler.h@{Mikes\-Profiler.h}!PROFILECODE@{PROFILECODE}}
+\index{PROFILECODE@{PROFILECODE}!MikesProfiler.h@{Mikes\-Profiler.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define PROFILECODE~1}\label{_mikes_profiler_8h_b65527f21700539473ee357f5af033a1}
+
+

@@ -1,0 +1,71 @@
+\section{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/ass2\_\-servo.c File Reference}
+\label{ass2__servo_8c}\index{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/ass2_servo.c@{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/ass2\_\-servo.c}}
+{\tt \#include \char`\"{}Ass2\_\-Servo.h\char`\"{}}\par
+{\tt \#include $<$util$\backslash$delay.h$>$}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define {\bf SWEEPINCREMENTAMOUNT}~100
+\item 
+\#define {\bf OUTPUTDIRECTION}~0
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf Initialize\-Servo\-Controller} ({\bf Servo\-Control\-Struct} $\ast$Servo\-Controller)
+\item 
+void {\bf Servo\-Start\-Sweep} ()
+\item 
+int {\bf Servo\-Update\-Sweep\-Position} ({\bf Communication\-Stat\-Struct} $\ast$Comm\-Stat)
+\item 
+void {\bf Servo\-Set\-Direction} ({\bf Servo\-Control\-Struct} $\ast$Servo\-Controller, {\bf Communication\-Stat\-Struct} $\ast$Comm\-Stat)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+volatile int {\bf Sweep\-Percent}
+\end{CompactItemize}
+
+
+\subsection{Define Documentation}
+\index{ass2_servo.c@{ass2\_\-servo.c}!OUTPUTDIRECTION@{OUTPUTDIRECTION}}
+\index{OUTPUTDIRECTION@{OUTPUTDIRECTION}!ass2_servo.c@{ass2\_\-servo.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define OUTPUTDIRECTION~0}\label{ass2__servo_8c_65bb458c1a9cb795eb07748e01b6dcdb}
+
+
+\index{ass2_servo.c@{ass2\_\-servo.c}!SWEEPINCREMENTAMOUNT@{SWEEPINCREMENTAMOUNT}}
+\index{SWEEPINCREMENTAMOUNT@{SWEEPINCREMENTAMOUNT}!ass2_servo.c@{ass2\_\-servo.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define SWEEPINCREMENTAMOUNT~100}\label{ass2__servo_8c_0f36be23d54673dd62a1663414fe82f2}
+
+
+
+
+\subsection{Function Documentation}
+\index{ass2_servo.c@{ass2\_\-servo.c}!InitializeServoController@{InitializeServoController}}
+\index{InitializeServoController@{InitializeServoController}!ass2_servo.c@{ass2\_\-servo.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Initialize\-Servo\-Controller ({\bf Servo\-Control\-Struct} $\ast$ {\em Servo\-Controller})}\label{ass2__servo_8c_cbb2628a30fc95f252352877da2e7dbf}
+
+
+\index{ass2_servo.c@{ass2\_\-servo.c}!ServoSetDirection@{ServoSetDirection}}
+\index{ServoSetDirection@{ServoSetDirection}!ass2_servo.c@{ass2\_\-servo.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Servo\-Set\-Direction ({\bf Servo\-Control\-Struct} $\ast$ {\em Servo\-Controller}, {\bf Communication\-Stat\-Struct} $\ast$ {\em Comm\-Stat})}\label{ass2__servo_8c_d4826c0168cf83085638ce210ca5dcbb}
+
+
+\index{ass2_servo.c@{ass2\_\-servo.c}!ServoStartSweep@{ServoStartSweep}}
+\index{ServoStartSweep@{ServoStartSweep}!ass2_servo.c@{ass2\_\-servo.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Servo\-Start\-Sweep ()}\label{ass2__servo_8c_77481278c879af576e516a9f12641af2}
+
+
+\index{ass2_servo.c@{ass2\_\-servo.c}!ServoUpdateSweepPosition@{ServoUpdateSweepPosition}}
+\index{ServoUpdateSweepPosition@{ServoUpdateSweepPosition}!ass2_servo.c@{ass2\_\-servo.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}int Servo\-Update\-Sweep\-Position ({\bf Communication\-Stat\-Struct} $\ast$ {\em Comm\-Stat})}\label{ass2__servo_8c_2435a61f7196cde11720a3931f59360a}
+
+
+
+
+\subsection{Variable Documentation}
+\index{ass2_servo.c@{ass2\_\-servo.c}!SweepPercent@{SweepPercent}}
+\index{SweepPercent@{SweepPercent}!ass2_servo.c@{ass2\_\-servo.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}volatile int {\bf Sweep\-Percent}}\label{ass2__servo_8c_c06f60f9d8a9630040b0a35f36058db0}
+
+

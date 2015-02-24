@@ -1,0 +1,799 @@
+Archive member included because of file (symbol)
+
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_divmodhi4.o)
+                              ServoController.o (__divmodhi4)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clear_bss.o)
+                              Assignment2.o (__do_clear_bss)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fixunssfsi.o)
+                              Ass2_Communicate.o (__fixunssfsi)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o)
+                              Ass2_Communicate.o (__subsf3)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_mul_sf.o)
+                              Ass2_Communicate.o (__mulsf3)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_div_sf.o)
+                              Ass2_Communicate.o (__divsf3)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_ge_sf.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fixunssfsi.o) (__gesf2)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_si_to_sf.o)
+                              Ass2_Communicate.o (__floatsisf)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_sf_to_si.o)
+                              ServoController.o (__fixsfsi)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_thenan_sf.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o) (__thenan_sf)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_udivmodhi4.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_divmodhi4.o) (__udivmodhi4)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_prologue.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o) (__prologue_saves__)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_epilogue.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o) (__epilogue_restores__)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clzsi2.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_si_to_sf.o) (__clzsi2)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_pack_sf.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o) (__pack_f)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_unpack_sf.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o) (__unpack_f)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fpcmp_parts_sf.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_ge_sf.o) (__fpcmp_parts_f)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clz.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clzsi2.o) (__clz_tab)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(snprintf.o)
+                              Assignment2.o (snprintf)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(snprintf.o) (vfprintf)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (strnlen_P)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (strnlen)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (fputc)
+c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+                              c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o) (__ultoa_invert)
+
+Allocating common symbols
+Common symbol       size              file
+
+packet              0x20              Ass2_Communicate.o
+task_sonar_event    0x2               Assignment2.o
+task_init_event     0x2               Assignment2.o
+task_ping_event     0x2               Assignment2.o
+transmit_lock       0x1               radio.o
+state_complete_event
+                    0x2               Assignment2.o
+SonarDirectionServo
+                    0x12              Assignment2.o
+task_report_event   0x2               Assignment2.o
+ASS_UART_BUFF       0x51              Assignment2.o
+SONARReceivedFlag   0x1               Ass2_Communicate.o
+ComStats            0xb               Assignment2.o
+task_sweep_event    0x2               Assignment2.o
+CurrentActiveState  0x2               Assignment2.o
+task_statistics_event
+                    0x2               Assignment2.o
+WorkingStruct       0xb               Ass2_Communicate.o
+uart_rx             0x1               Assignment2.o
+SweepPercent        0x2               Ass2_Servo.o
+PINGReceivedFlag    0x1               Ass2_Communicate.o
+bPINGRecieved       0x2               Assignment2.o
+task_request_event  0x2               Assignment2.o
+TimeoutCounter      0x2               Ass2_Communicate.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00100000         xr
+data             0x00800200         0x0000fe00         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800200
+LOAD Assignment2.o
+LOAD Ass2_Communicate.o
+LOAD Ass2_Servo.o
+LOAD Ass2_Statistics.o
+LOAD ServoController.o
+LOAD radio.o
+LOAD spi.o
+LOAD sonar.o
+LOAD os.o
+LOAD crt0.o
+LOAD uart.o
+LOAD c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a
+LOAD c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a
+LOAD c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x3520
+ *(.vectors)
+ .vectors       0x00000000       0x98 crt0.o
+                0x00000000                __vectors
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+                0x00000098                . = ALIGN (0x2)
+                0x00000098                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x00000098        0x0 linker stubs
+ *(.trampolines*)
+                0x00000098                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x00000098                __ctors_start = .
+ *(.ctors)
+                0x00000098                __ctors_end = .
+                0x00000098                __dtors_start = .
+ *(.dtors)
+                0x00000098                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x00000098        0x0 crt0.o
+                0x00000098                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x00000098        0xc crt0.o
+                0x00000098                init2
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x000000a4       0x1a crt0.o
+                0x000000a4                __do_copy_data
+ .init4         0x000000be       0x10 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clear_bss.o)
+                0x000000be                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000ce        0x6 crt0.o
+                0x000000ce                init9
+ *(.init9)
+ *(.text)
+ .text          0x000000d4      0x402 Assignment2.o
+                0x00000342                Ass2_Task_UpdateStatistics
+                0x0000030c                Ass2_Task_CalculateAndReport
+                0x00000414                Ass2_Task_SendRequest
+                0x000003ce                Ass2_Task_GetPINGResponse
+                0x000004a0                Ass2_Task_Initialization
+                0x0000045a                Ass2_Task_UpdateSweep
+                0x00000388                Ass2_Task_GetSonarResponse
+                0x000000d4                main
+                0x00000248                Ass2_StateMachine
+ .text          0x000004d6      0x3b0 Ass2_Communicate.o
+                0x000004ec                CommunicationPINGTimeout
+                0x00000514                CommunicationPingResetRetryCount
+                0x00000790                CommunicationSendTriggerMessage
+                0x00000654                CommunicationGetResponseStatistics
+                0x000007e4                InitializeCommunication
+                0x0000051e                CommunicationPingUpdateRetryCount
+                0x0000072c                CommuncationReceivedPING
+                0x00000560                CommunicationReportDistance
+                0x000004e0                GetMessageClock
+                0x0000054c                radio_rxhandler
+                0x00000716                CommunicationReceivedSonarResponse
+                0x000004d6                ResetMessageClock
+ .text          0x00000886       0x8e Ass2_Servo.o
+                0x00000886                ServoStartSweep
+                0x00000890                ServoUpdateSweepPosition
+                0x000008da                InitializeServoController
+                0x000008ce                ServoSetDirection
+ .text          0x00000914      0x16e Ass2_Statistics.o
+                0x00000950                StatisticsCalculateDirectionAndDistance
+                0x0000096c                StatisticsAddNewSample
+                0x00000914                StatisticsInitialize
+                0x0000092e                StatisticsResetSample
+ .text          0x00000a82      0x15e ServoController.o
+                0x00000b64                AddServoValueDelta
+                0x00000a82                ServoInitialize
+                0x00000b78                SubtractServoValueDelta
+                0x00000b8c                SetServoRange
+                0x00000ac0                SetServoPeriod
+                0x00000ac8                SetServoValue
+ .text          0x00000be0      0x5a0 radio.o
+                0x00000d46                _config
+                0x00001088                __vector_1
+                0x00000dfc                _get_register
+                0x00000e4a                Radio_Configure
+                0x00000fec                Radio_Transmit
+                0x00000fa2                _set_tx_mode
+                0x00000dce                Radio_Init
+                0x00000ea2                Radio_Configure_Rx
+                0x00000c2c                _set_register
+                0x0000103e                _set_rx_mode
+                0x00000c5a                Radio_Set_Tx_Addr
+                0x00000be0                Radio_Drop_Rate
+                0x00000c86                _reset_pipe0_address
+                0x00000c9c                send_instruction
+                0x00000c20                _get_status
+                0x00000cdc                Radio_Receive
+ .text          0x00001180       0x66 spi.o
+                0x000011da                SPI_Write_Byte
+                0x000011c0                SPI_Write_Block
+                0x00001180                SPI_Init
+                0x00001190                SPI_ReadWrite_Block
+ .text          0x000011e6       0xe6 sonar.o
+                0x00001266                __vector_31
+                0x00001226                sonar_echo_received
+                0x00001236                sonar_get_distance
+                0x0000121a                sonar_trigger
+                0x0000125a                sonar_get_sonar_time
+                0x0000124e                sonar_get_ping_time
+                0x000011e6                sonar_init
+ .text          0x000012cc      0xe82 os.o
+                0x0000209a                Event_Init
+                0x00002082                Task_GetArg
+                0x0000200e                Task_Create
+                0x000020f4                Event_Broadcast
+                0x000020b8                Event_Wait
+                0x00001436                __vector_17
+                0x0000206c                Task_Terminate
+                0x00002046                Task_Next
+                0x000019d8                OS_Init
+                0x00002130                Broadcast_And_Next
+                0x0000150e                OS_Abort
+                0x000020d6                Event_Signal
+                0x00002112                Signal_And_Next
+ .text          0x0000214e        0x4 crt0.o
+                0x0000214e                __vector_22
+                0x0000214e                __vector_28
+                0x0000214e                __vector_32
+                0x0000214e                __vector_34
+                0x0000214e                __vector_24
+                0x0000214e                __vector_12
+                0x0000214e                __vector_6
+                0x0000214e                __vector_35
+                0x0000214e                __vector_3
+                0x0000214e                __vector_23
+                0x0000214e                __vector_30
+                0x0000214e                __vector_11
+                0x0000214e                __vector_13
+                0x0000214e                __vector_19
+                0x0000214e                __vector_7
+                0x0000214e                __vector_27
+                0x0000214e                __vector_5
+                0x0000214e                __vector_33
+                0x0000214e                __vector_37
+                0x0000214e                __vector_4
+                0x0000214e                __vector_9
+                0x0000214e                __vector_2
+                0x0000214e                __vector_21
+                0x0000214e                __vector_15
+                0x0000214e                __vector_36
+                0x0000214e                __vector_29
+                0x0000214e                __vector_8
+                0x0000214e                __vector_26
+                0x0000214e                __vector_14
+                0x0000214e                __vector_10
+                0x0000214e                __vector_not_set
+                0x0000214e                __vector_16
+                0x0000214e                __vector_18
+                0x0000214e                __vector_20
+ .text          0x00002152      0x110 uart.o
+                0x000021d6                uart_reset_recv
+                0x0000217a                uart_putstr
+                0x000021e0                __vector_25
+                0x00002166                uart_getchar
+                0x00002198                uart_init
+                0x000021cc                uart_bytes_recv
+                0x00002152                uart_putchar
+ .text          0x00002262        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_divmodhi4.o)
+ .text          0x00002262        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clear_bss.o)
+ .text          0x00002262       0x58 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fixunssfsi.o)
+                0x00002262                __fixunssfsi
+ .text          0x000022ba      0x354 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o)
+                0x00002552                __subsf3
+                0x000025b4                __addsf3
+ .text          0x0000260e      0x1f4 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_mul_sf.o)
+                0x0000260e                __mulsf3
+ .text          0x00002802      0x158 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_div_sf.o)
+                0x00002802                __divsf3
+ .text          0x0000295a       0x60 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_ge_sf.o)
+                0x0000295a                __gesf2
+ .text          0x000029ba       0xbc c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_si_to_sf.o)
+                0x000029ba                __floatsisf
+ .text          0x00002a76       0xa8 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_sf_to_si.o)
+                0x00002a76                __fixsfsi
+ .text          0x00002b1e        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_thenan_sf.o)
+ .text          0x00002b1e        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_udivmodhi4.o)
+ .text          0x00002b1e        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_prologue.o)
+ .text          0x00002b1e        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_epilogue.o)
+ .text          0x00002b1e       0x9e c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clzsi2.o)
+                0x00002b1e                __clzsi2
+ .text          0x00002bbc      0x1aa c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_pack_sf.o)
+                0x00002bbc                __pack_f
+ .text          0x00002d66       0xf0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_unpack_sf.o)
+                0x00002d66                __unpack_f
+ .text          0x00002e56       0xb2 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fpcmp_parts_sf.o)
+                0x00002e56                __fpcmp_parts_f
+ .text          0x00002f08        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clz.o)
+ .text          0x00002f08       0x62 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(snprintf.o)
+                0x00002f08                snprintf
+ .text          0x00002f6a      0x3ba c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+                0x00002f6a                vfprintf
+ .text          0x00003324       0x16 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+                0x00003324                strnlen_P
+ .text          0x0000333a       0x16 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+                0x0000333a                strnlen
+ .text          0x00003350       0x58 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+                0x00003350                fputc
+ .text          0x000033a8       0xbc c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+                0x000033a8                __ultoa_invert
+                0x00003464                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00003464       0x26 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_divmodhi4.o)
+                0x00003464                __divmodhi4
+                0x00003464                _div
+ .text.libgcc   0x0000348a        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000348a       0x28 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_udivmodhi4.o)
+                0x0000348a                __udivmodhi4
+ .text.libgcc   0x000034b2       0x38 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_prologue.o)
+                0x000034b2                __prologue_saves__
+ .text.libgcc   0x000034ea       0x36 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_epilogue.o)
+                0x000034ea                __epilogue_restores__
+                0x00003520                . = ALIGN (0x2)
+ *(.fini9)
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ *(.fini0)
+                0x00003520                _etext = .
+
+.data           0x00800200      0x194 load address 0x00003520
+                0x00800200                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800200       0x2a Assignment2.o
+                0x00800225                remote_addr
+                0x0080021e                PT
+                0x00800220                station_addr
+                0x00800220                PPP
+ .data          0x0080022a       0x29 Ass2_Communicate.o
+ .data          0x00800253        0x0 Ass2_Servo.o
+ .data          0x00800253       0x23 Ass2_Statistics.o
+ .data          0x00800276        0x0 ServoController.o
+ .data          0x00800276       0x13 radio.o
+                0x00800288                tx_last_status
+                0x00800286                tx_history
+                0x0080027c                tx_address
+                0x00800276                rx_pipe_widths
+                0x00800281                rx_pipe0_address
+ .data          0x00800289        0x0 spi.o
+ .data          0x00800289        0x0 sonar.o
+ .data          0x00800289        0x3 os.o
+ .data          0x0080028c        0x0 crt0.o
+ .data          0x0080028c        0x0 uart.o
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_divmodhi4.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clear_bss.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fixunssfsi.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_mul_sf.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_div_sf.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_ge_sf.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_si_to_sf.o)
+ .data          0x0080028c        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_sf_to_si.o)
+ .data          0x0080028c        0x8 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_thenan_sf.o)
+                0x0080028c                __thenan_sf
+ .data          0x00800294        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_udivmodhi4.o)
+ .data          0x00800294        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_prologue.o)
+ .data          0x00800294        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_epilogue.o)
+ .data          0x00800294        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clzsi2.o)
+ .data          0x00800294        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_pack_sf.o)
+ .data          0x00800294        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_unpack_sf.o)
+ .data          0x00800294        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fpcmp_parts_sf.o)
+ .data          0x00800294      0x100 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clz.o)
+                0x00800294                __clz_tab
+ .data          0x00800394        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(snprintf.o)
+ .data          0x00800394        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+ .data          0x00800394        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+ .data          0x00800394        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+ .data          0x00800394        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+ .data          0x00800394        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x00800394                . = ALIGN (0x2)
+                0x00800394                _edata = .
+                0x00800394                PROVIDE (__data_end, .)
+
+.bss            0x00800394     0x13df
+                0x00800394                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x00800394        0x6 Assignment2.o
+                0x00800394                InitializedSystem
+                0x00800398                SweepComplete
+                0x00800396                ReportingOutcome
+ .bss           0x0080039a        0x2 Ass2_Communicate.o
+ .bss           0x0080039c        0x0 Ass2_Servo.o
+ .bss           0x0080039c        0xb Ass2_Statistics.o
+ .bss           0x008003a7        0x0 ServoController.o
+ .bss           0x008003a7        0x0 radio.o
+ .bss           0x008003a7        0x0 spi.o
+ .bss           0x008003a7        0x5 sonar.o
+ .bss           0x008003ac     0x12ac os.o
+ .bss           0x00801658        0x0 crt0.o
+ .bss           0x00801658       0x66 uart.o
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_divmodhi4.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clear_bss.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fixunssfsi.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_addsub_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_mul_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_div_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_ge_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_si_to_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_sf_to_si.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_thenan_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_udivmodhi4.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_prologue.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_epilogue.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clzsi2.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_pack_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_unpack_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_fpcmp_parts_sf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/avr6\libgcc.a(_clz.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(snprintf.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(vfprintf_std.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen_P.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(strnlen.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(fputc.o)
+ .bss           0x008016be        0x0 c:/winavr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr6\libc.a(ultoa_invert.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x008016be       0x83 Assignment2.o
+                0x008016be                task_sonar_event
+                0x008016c0                task_init_event
+                0x008016c2                task_ping_event
+                0x008016c4                state_complete_event
+                0x008016c6                SonarDirectionServo
+                0x008016d8                task_report_event
+                0x008016da                ASS_UART_BUFF
+                0x0080172b                ComStats
+                0x00801736                task_sweep_event
+                0x00801738                CurrentActiveState
+                0x0080173a                task_statistics_event
+                0x0080173c                uart_rx
+                0x0080173d                bPINGRecieved
+                0x0080173f                task_request_event
+ COMMON         0x00801741       0x2f Ass2_Communicate.o
+                0x00801741                packet
+                0x00801761                SONARReceivedFlag
+                0x00801762                WorkingStruct
+                0x0080176d                PINGReceivedFlag
+                0x0080176e                TimeoutCounter
+ COMMON         0x00801770        0x2 Ass2_Servo.o
+                0x00801770                SweepPercent
+ COMMON         0x00801772        0x1 radio.o
+                0x00801772                transmit_lock
+                0x00801773                PROVIDE (__bss_end, .)
+                0x00003520                __data_load_start = LOADADDR (.data)
+                0x000036b4                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00801773        0x0
+                0x00801773                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00801773                PROVIDE (__noinit_end, .)
+                0x00801773                _end = .
+                0x00801773                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000      0x188
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 Assignment2.o
+ .debug_aranges
+                0x00000020       0x20 Ass2_Communicate.o
+ .debug_aranges
+                0x00000040       0x20 Ass2_Servo.o
+ .debug_aranges
+                0x00000060       0x20 Ass2_Statistics.o
+ .debug_aranges
+                0x00000080       0x20 ServoController.o
+ .debug_aranges
+                0x000000a0       0x20 radio.o
+ .debug_aranges
+                0x000000c0       0x20 spi.o
+ .debug_aranges
+                0x000000e0       0x20 sonar.o
+ .debug_aranges
+                0x00000100       0x20 os.o
+ .debug_aranges
+                0x00000120       0x48 crt0.o
+ .debug_aranges
+                0x00000168       0x20 uart.o
+
+.debug_pubnames
+                0x00000000      0xad2
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000      0x28a Assignment2.o
+ .debug_pubnames
+                0x0000028a      0x20b Ass2_Communicate.o
+ .debug_pubnames
+                0x00000495       0x88 Ass2_Servo.o
+ .debug_pubnames
+                0x0000051d       0x98 Ass2_Statistics.o
+ .debug_pubnames
+                0x000005b5       0x90 ServoController.o
+ .debug_pubnames
+                0x00000645      0x1a5 radio.o
+ .debug_pubnames
+                0x000007ea       0x5e spi.o
+ .debug_pubnames
+                0x00000848       0xa3 sonar.o
+ .debug_pubnames
+                0x000008eb       0xea os.o
+ .debug_pubnames
+                0x000009d5       0x67 crt0.o
+ .debug_pubnames
+                0x00000a3c       0x96 uart.o
+
+.debug_info     0x00000000     0x356d
+ *(.debug_info)
+ .debug_info    0x00000000      0x72c Assignment2.o
+ .debug_info    0x0000072c      0x8c1 Ass2_Communicate.o
+ .debug_info    0x00000fed      0x23a Ass2_Servo.o
+ .debug_info    0x00001227      0x1b9 Ass2_Statistics.o
+ .debug_info    0x000013e0      0x27d ServoController.o
+ .debug_info    0x0000165d      0xafb radio.o
+ .debug_info    0x00002158      0x13e spi.o
+ .debug_info    0x00002296      0x258 sonar.o
+ .debug_info    0x000024ee      0xdaf os.o
+ .debug_info    0x0000329d       0xda crt0.o
+ .debug_info    0x00003377      0x1f6 uart.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000     0x10ba
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x211 Assignment2.o
+ .debug_abbrev  0x00000211      0x2c4 Ass2_Communicate.o
+ .debug_abbrev  0x000004d5       0xc8 Ass2_Servo.o
+ .debug_abbrev  0x0000059d       0xdd Ass2_Statistics.o
+ .debug_abbrev  0x0000067a       0xd3 ServoController.o
+ .debug_abbrev  0x0000074d      0x2d2 radio.o
+ .debug_abbrev  0x00000a1f       0xbb spi.o
+ .debug_abbrev  0x00000ada      0x130 sonar.o
+ .debug_abbrev  0x00000c0a      0x30f os.o
+ .debug_abbrev  0x00000f19       0x41 crt0.o
+ .debug_abbrev  0x00000f5a      0x160 uart.o
+
+.debug_line     0x00000000     0x2703
+ *(.debug_line)
+ .debug_line    0x00000000      0x439 Assignment2.o
+ .debug_line    0x00000439      0x475 Ass2_Communicate.o
+ .debug_line    0x000008ae      0x143 Ass2_Servo.o
+ .debug_line    0x000009f1      0x18f Ass2_Statistics.o
+ .debug_line    0x00000b80      0x186 ServoController.o
+ .debug_line    0x00000d06      0x684 radio.o
+ .debug_line    0x0000138a      0x13b spi.o
+ .debug_line    0x000014c5      0x22a sonar.o
+ .debug_line    0x000016ef      0xbeb os.o
+ .debug_line    0x000022da      0x24d crt0.o
+ .debug_line    0x00002527      0x1dc uart.o
+
+.debug_frame    0x00000000      0x680
+ *(.debug_frame)
+ .debug_frame   0x00000000       0xa0 Assignment2.o
+ .debug_frame   0x000000a0       0xd0 Ass2_Communicate.o
+ .debug_frame   0x00000170       0x50 Ass2_Servo.o
+ .debug_frame   0x000001c0       0x50 Ass2_Statistics.o
+ .debug_frame   0x00000210       0x70 ServoController.o
+ .debug_frame   0x00000280      0x110 radio.o
+ .debug_frame   0x00000390       0x50 spi.o
+ .debug_frame   0x000003e0       0x80 sonar.o
+ .debug_frame   0x00000460      0x130 os.o
+ .debug_frame   0x00000590       0x70 crt0.o
+ .debug_frame   0x00000600       0x80 uart.o
+
+.debug_str      0x00000000     0x160f
+ *(.debug_str)
+ .debug_str     0x00000000      0x4f6 Assignment2.o
+                                0x558 (size before relaxing)
+ .debug_str     0x000004f6      0x59a Ass2_Communicate.o
+                                0x7a0 (size before relaxing)
+ .debug_str     0x00000a90       0x72 Ass2_Servo.o
+                                0x240 (size before relaxing)
+ .debug_str     0x00000b02       0x8c Ass2_Statistics.o
+                                0x1e7 (size before relaxing)
+ .debug_str     0x00000b8e       0xb1 ServoController.o
+                                0x1ea (size before relaxing)
+ .debug_str     0x00000c3f      0x237 radio.o
+                                0x72b (size before relaxing)
+ .debug_str     0x00000e76       0x4b spi.o
+                                0x124 (size before relaxing)
+ .debug_str     0x00000ec1       0xa2 sonar.o
+                                0x1d8 (size before relaxing)
+ .debug_str     0x00000f63      0x5eb os.o
+                                0x6f4 (size before relaxing)
+ .debug_str     0x0000154e       0x4a crt0.o
+                                0x105 (size before relaxing)
+ .debug_str     0x00001598       0x77 uart.o
+                                0x17a (size before relaxing)
+
+.debug_loc      0x00000000      0xed8
+ *(.debug_loc)
+ .debug_loc     0x00000000       0xc8 Assignment2.o
+ .debug_loc     0x000000c8       0xab Ass2_Communicate.o
+ .debug_loc     0x00000173       0x90 Ass2_Servo.o
+ .debug_loc     0x00000203       0x78 Ass2_Statistics.o
+ .debug_loc     0x0000027b      0x1c0 ServoController.o
+ .debug_loc     0x0000043b      0x4bf radio.o
+ .debug_loc     0x000008fa       0x7b spi.o
+ .debug_loc     0x00000975       0x13 sonar.o
+ .debug_loc     0x00000988      0x4a4 os.o
+ .debug_loc     0x00000e2c       0xac uart.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(Assignment2.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000      0x1f0
+ .debug_ranges  0x00000000       0xd8 Assignment2.o
+ .debug_ranges  0x000000d8       0xc0 os.o
+ .debug_ranges  0x00000198       0x40 crt0.o
+ .debug_ranges  0x000001d8       0x18 uart.o

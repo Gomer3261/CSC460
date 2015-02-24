@@ -1,0 +1,108 @@
+\section{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/trace/trace.c File Reference}
+\label{trace_8c}\index{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/trace/trace.c@{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/trace/trace.c}}
+Testing module for creating traces. Used for testing an RTOS. 
+
+{\tt \#include \char`\"{}trace.h\char`\"{}}\par
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf print\_\-trace} ()
+\item 
+void {\bf add\_\-to\_\-trace} (uint16\_\-t number)
+\item 
+void {\bf set\_\-test} (uint8\_\-t number)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+uint8\_\-t {\bf trace\_\-number} = 0
+\item 
+uint8\_\-t {\bf trace\_\-printed} = 0
+\item 
+uint16\_\-t {\bf trace\_\-array} [TRACE\_\-ARRAY\_\-SIZE]
+\item 
+uint16\_\-t volatile {\bf trace\_\-counter} = 0
+\item 
+char {\bf trace\_\-buffer} [TRACE\_\-BUFFER\_\-SIZE]
+\item 
+{\bf EVENT} $\ast$ {\bf print\_\-event}
+\end{CompactItemize}
+
+
+\subsection{Detailed Description}
+Testing module for creating traces. Used for testing an RTOS. 
+
+NOTE: Traces are stored in string like this
+
+T001;1;2;3;1235
+
+CSC 460/560 Real Time Operating Systems - Mantis Cheng \begin{Desc}
+\item[Author:]Scott Craig 
+
+Justin Tanner \end{Desc}
+
+
+\subsection{Function Documentation}
+\index{trace.c@{trace.c}!add_to_trace@{add\_\-to\_\-trace}}
+\index{add_to_trace@{add\_\-to\_\-trace}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void add\_\-to\_\-trace (uint16\_\-t {\em number})}\label{trace_8c_fb273c7463f897628ae56507128a23f0}
+
+
+Add a number to the trace array and increment the trace counter
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em number}]unisigned integer to add \end{description}
+\end{Desc}
+\index{trace.c@{trace.c}!print_trace@{print\_\-trace}}
+\index{print_trace@{print\_\-trace}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void print\_\-trace (void)}\label{trace_8c_6ff3858889fb6c93d595f9500a7eb232}
+
+
+Dump the entire trace array on UART \index{trace.c@{trace.c}!set_test@{set\_\-test}}
+\index{set_test@{set\_\-test}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void set\_\-test (uint8\_\-t {\em number})}\label{trace_8c_979fdf811bf4b4501b9b9a7e90e2181c}
+
+
+Set the test number of this set, that will be displayed in the trace header
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em number}]\end{description}
+\end{Desc}
+
+
+\subsection{Variable Documentation}
+\index{trace.c@{trace.c}!print_event@{print\_\-event}}
+\index{print_event@{print\_\-event}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf EVENT}$\ast$ {\bf print\_\-event}}\label{trace_8c_51abdaff62ed7e507e74802d6aaad2f0}
+
+
+print event setup in the main test \index{trace.c@{trace.c}!trace_array@{trace\_\-array}}
+\index{trace_array@{trace\_\-array}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint16\_\-t {\bf trace\_\-array}[TRACE\_\-ARRAY\_\-SIZE]}\label{trace_8c_fb05ce03fd88ea913cbebf4b58a8fa2b}
+
+
+array that holds all the elements of the trace \index{trace.c@{trace.c}!trace_buffer@{trace\_\-buffer}}
+\index{trace_buffer@{trace\_\-buffer}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}char {\bf trace\_\-buffer}[TRACE\_\-BUFFER\_\-SIZE]}\label{trace_8c_b7bfb292d50c2c89dee19b9cd80a8891}
+
+
+big buffer to hold all the trace \index{trace.c@{trace.c}!trace_counter@{trace\_\-counter}}
+\index{trace_counter@{trace\_\-counter}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint16\_\-t volatile {\bf trace\_\-counter} = 0}\label{trace_8c_2aa4c615e99964581e11d1aa748ebe6d}
+
+
+current element in the trace\_\-array \index{trace.c@{trace.c}!trace_number@{trace\_\-number}}
+\index{trace_number@{trace\_\-number}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t {\bf trace\_\-number} = 0}\label{trace_8c_9956ad8517da46daf23843392127b8de}
+
+
+boolean value to check wether we have printed the trace or not \index{trace.c@{trace.c}!trace_printed@{trace\_\-printed}}
+\index{trace_printed@{trace\_\-printed}!trace.c@{trace.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t {\bf trace\_\-printed} = 0}\label{trace_8c_4340f9bf037fd35ca7677d875113fff1}
+
+
+boolean value to check wether we have printed the trace or not 

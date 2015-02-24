@@ -335,6 +335,7 @@ void Service_Subscribe( SERVICE *s, int16_t *v );
 void Service_Publish( SERVICE *s, int16_t v );
 
 
+int Task_Create(void (*f)(void), int arg, unsigned int level, unsigned int name);
 
   /*=====  System Clock API ===== */
 

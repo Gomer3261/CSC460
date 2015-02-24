@@ -1,0 +1,69 @@
+\section{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/trace/trace.h File Reference}
+\label{trace_8h}\index{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/trace/trace.h@{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/trace/trace.h}}
+{\tt \#include $<$string.h$>$}\par
+{\tt \#include $<$stdlib.h$>$}\par
+{\tt \#include $<$stdio.h$>$}\par
+{\tt \#include $<$util/delay.h$>$}\par
+{\tt \#include \char`\"{}../uart.h\char`\"{}}\par
+{\tt \#include \char`\"{}../OS/os.h\char`\"{}}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define {\bf TRACE\_\-ARRAY\_\-SIZE}~256
+\item 
+\#define {\bf TRACE\_\-BUFFER\_\-SIZE}~32
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf print\_\-trace} (void)
+\item 
+void {\bf add\_\-to\_\-trace} (uint16\_\-t number)
+\item 
+void {\bf set\_\-test} (uint8\_\-t number)
+\end{CompactItemize}
+
+
+\subsection{Define Documentation}
+\index{trace.h@{trace.h}!TRACE_ARRAY_SIZE@{TRACE\_\-ARRAY\_\-SIZE}}
+\index{TRACE_ARRAY_SIZE@{TRACE\_\-ARRAY\_\-SIZE}!trace.h@{trace.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define TRACE\_\-ARRAY\_\-SIZE~256}\label{trace_8h_6be0daabb7b1bd5e305f99640bc4c57d}
+
+
+\index{trace.h@{trace.h}!TRACE_BUFFER_SIZE@{TRACE\_\-BUFFER\_\-SIZE}}
+\index{TRACE_BUFFER_SIZE@{TRACE\_\-BUFFER\_\-SIZE}!trace.h@{trace.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define TRACE\_\-BUFFER\_\-SIZE~32}\label{trace_8h_85f9a678e5f44d97a8a21adab8c065b7}
+
+
+
+
+\subsection{Function Documentation}
+\index{trace.h@{trace.h}!add_to_trace@{add\_\-to\_\-trace}}
+\index{add_to_trace@{add\_\-to\_\-trace}!trace.h@{trace.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void add\_\-to\_\-trace (uint16\_\-t {\em number})}\label{trace_8h_fb273c7463f897628ae56507128a23f0}
+
+
+Add a number to the trace array and increment the trace counter
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em number}]unisigned integer to add \end{description}
+\end{Desc}
+\index{trace.h@{trace.h}!print_trace@{print\_\-trace}}
+\index{print_trace@{print\_\-trace}!trace.h@{trace.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void print\_\-trace (void)}\label{trace_8h_c8f0a211851c2ba508ca6f725085d72e}
+
+
+Dump the entire trace array on UART \index{trace.h@{trace.h}!set_test@{set\_\-test}}
+\index{set_test@{set\_\-test}!trace.h@{trace.h}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void set\_\-test (uint8\_\-t {\em number})}\label{trace_8h_979fdf811bf4b4501b9b9a7e90e2181c}
+
+
+Set the test number of this set, that will be displayed in the trace header
+
+\begin{Desc}
+\item[Parameters:]
+\begin{description}
+\item[{\em number}]\end{description}
+\end{Desc}

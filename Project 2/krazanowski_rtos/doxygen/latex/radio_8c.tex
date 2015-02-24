@@ -1,0 +1,252 @@
+\section{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/radio/radio.c File Reference}
+\label{radio_8c}\index{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/radio/radio.c@{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/radio/radio.c}}
+{\tt \#include \char`\"{}radio.h\char`\"{}}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define {\bf CHANNEL}~112
+\item 
+\#define {\bf ADDRESS\_\-LENGTH}~5
+\item 
+\#define {\bf RADIO\_\-DDR}~DDRB
+\item 
+\#define {\bf RADIO\_\-PORT}~PORTB
+\item 
+\#define {\bf RADIO\_\-CE}~PORTB4
+\item 
+\#define {\bf RADIO\_\-CSN}~PORTB5
+\item 
+\#define {\bf RADIO\_\-CSN\_\-HIGH}()~RADIO\_\-PORT $|$=  (1$<$$<$RADIO\_\-CSN);
+\item 
+\#define {\bf RADIO\_\-CSN\_\-LOW}()~RADIO\_\-PORT \&= $\sim$(1$<$$<$RADIO\_\-CSN);
+\item 
+\#define {\bf RADIO\_\-CE\_\-HIGH}()~RADIO\_\-PORT $|$=  (1$<$$<$RADIO\_\-CE);
+\item 
+\#define {\bf RADIO\_\-CE\_\-LOW}()~RADIO\_\-PORT \&= $\sim$(1$<$$<$RADIO\_\-CE);
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf radio\_\-rxhandler} (uint8\_\-t pipenumber)
+\item 
+uint8\_\-t {\bf \_\-get\_\-status} ()
+\item 
+uint8\_\-t {\bf \_\-set\_\-register} ({\bf radio\_\-register\_\-t} reg, uint8\_\-t $\ast$value, uint8\_\-t len)
+\item 
+uint8\_\-t {\bf \_\-get\_\-register} ({\bf radio\_\-register\_\-t} reg, uint8\_\-t $\ast$buffer, uint8\_\-t len)
+\item 
+void {\bf send\_\-instruction} (uint8\_\-t instruction, uint8\_\-t $\ast$data, uint8\_\-t $\ast$buffer, uint8\_\-t len)
+\item 
+void {\bf \_\-set\_\-rx\_\-mode} ()
+\item 
+void {\bf \_\-set\_\-tx\_\-mode} ()
+\item 
+void {\bf \_\-reset\_\-pipe0\_\-address} ()
+\item 
+void {\bf \_\-config} ()
+\item 
+void {\bf Radio\_\-Init} ()
+\item 
+void {\bf Radio\_\-Configure\_\-Rx} ({\bf RADIO\_\-PIPE} pipe, uint8\_\-t $\ast$address, uint8\_\-t enable)
+\item 
+void {\bf Radio\_\-Set\_\-Tx\_\-Addr} (uint8\_\-t $\ast$address)
+\item 
+void {\bf Radio\_\-Configure} ({\bf RADIO\_\-DATA\_\-RATE} dr, {\bf RADIO\_\-TX\_\-POWER} power)
+\item 
+uint8\_\-t {\bf Radio\_\-Transmit} ({\bf radiopacket\_\-t} $\ast$payload, {\bf RADIO\_\-TX\_\-WAIT} wait)
+\item 
+{\bf RADIO\_\-RX\_\-STATUS} {\bf Radio\_\-Receive} ({\bf radiopacket\_\-t} $\ast$buffer)
+\item 
+uint8\_\-t {\bf Radio\_\-Drop\_\-Rate} ()
+\item 
+{\bf ISR} (INT0\_\-vect)
+\end{CompactItemize}
+\subsection*{Variables}
+\begin{CompactItemize}
+\item 
+volatile uint8\_\-t {\bf transmit\_\-lock}
+\item 
+volatile uint8\_\-t {\bf rx\_\-pipe\_\-widths} [6] = \{32, 32, 0, 0, 0, 0\}
+\item 
+volatile uint8\_\-t {\bf tx\_\-address} [5] = \{ 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 \}
+\item 
+volatile uint8\_\-t {\bf rx\_\-pipe0\_\-address} [5] = \{ 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 \}
+\item 
+volatile uint16\_\-t {\bf tx\_\-history} = 0x\-FF
+\item 
+volatile {\bf RADIO\_\-TX\_\-STATUS} {\bf tx\_\-last\_\-status} = RADIO\_\-TX\_\-SUCCESS
+\end{CompactItemize}
+
+
+\subsection{Define Documentation}
+\index{radio.c@{radio.c}!ADDRESS_LENGTH@{ADDRESS\_\-LENGTH}}
+\index{ADDRESS_LENGTH@{ADDRESS\_\-LENGTH}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define ADDRESS\_\-LENGTH~5}\label{radio_8c_8beaa5b28cf9a48a1df357d25ec9704e}
+
+
+\index{radio.c@{radio.c}!CHANNEL@{CHANNEL}}
+\index{CHANNEL@{CHANNEL}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define CHANNEL~112}\label{radio_8c_ce6a11e892466500d47d1f45f042bc53}
+
+
+\index{radio.c@{radio.c}!RADIO_CE@{RADIO\_\-CE}}
+\index{RADIO_CE@{RADIO\_\-CE}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-CE~PORTB4}\label{radio_8c_d2e9301aa3af89755c6e131d4fde6225}
+
+
+\index{radio.c@{radio.c}!RADIO_CE_HIGH@{RADIO\_\-CE\_\-HIGH}}
+\index{RADIO_CE_HIGH@{RADIO\_\-CE\_\-HIGH}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-CE\_\-HIGH()~RADIO\_\-PORT $|$=  (1$<$$<$RADIO\_\-CE);}\label{radio_8c_5b9e02752dfe7bf58652c8902c0e0a63}
+
+
+\index{radio.c@{radio.c}!RADIO_CE_LOW@{RADIO\_\-CE\_\-LOW}}
+\index{RADIO_CE_LOW@{RADIO\_\-CE\_\-LOW}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-CE\_\-LOW()~RADIO\_\-PORT \&= $\sim$(1$<$$<$RADIO\_\-CE);}\label{radio_8c_ad796cb8e6062c29a387ce717f915451}
+
+
+\index{radio.c@{radio.c}!RADIO_CSN@{RADIO\_\-CSN}}
+\index{RADIO_CSN@{RADIO\_\-CSN}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-CSN~PORTB5}\label{radio_8c_3dc5c473cf4b49e13969b183786fd37b}
+
+
+\index{radio.c@{radio.c}!RADIO_CSN_HIGH@{RADIO\_\-CSN\_\-HIGH}}
+\index{RADIO_CSN_HIGH@{RADIO\_\-CSN\_\-HIGH}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-CSN\_\-HIGH()~RADIO\_\-PORT $|$=  (1$<$$<$RADIO\_\-CSN);}\label{radio_8c_deb9e2e0872f429587567048d245d2b2}
+
+
+\index{radio.c@{radio.c}!RADIO_CSN_LOW@{RADIO\_\-CSN\_\-LOW}}
+\index{RADIO_CSN_LOW@{RADIO\_\-CSN\_\-LOW}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-CSN\_\-LOW()~RADIO\_\-PORT \&= $\sim$(1$<$$<$RADIO\_\-CSN);}\label{radio_8c_e1685b44edce2e5e3f7b72d3c309405d}
+
+
+\index{radio.c@{radio.c}!RADIO_DDR@{RADIO\_\-DDR}}
+\index{RADIO_DDR@{RADIO\_\-DDR}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-DDR~DDRB}\label{radio_8c_3cce25d7e9ab6d47626415b6e430d085}
+
+
+\index{radio.c@{radio.c}!RADIO_PORT@{RADIO\_\-PORT}}
+\index{RADIO_PORT@{RADIO\_\-PORT}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define RADIO\_\-PORT~PORTB}\label{radio_8c_8d8038e2a7393d7d1941deab210dba36}
+
+
+
+
+\subsection{Function Documentation}
+\index{radio.c@{radio.c}!_config@{\_\-config}}
+\index{_config@{\_\-config}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void \_\-config ()}\label{radio_8c_832266d9542f73011429f7dd910c03e6}
+
+
+\index{radio.c@{radio.c}!_get_register@{\_\-get\_\-register}}
+\index{_get_register@{\_\-get\_\-register}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t \_\-get\_\-register ({\bf radio\_\-register\_\-t} {\em reg}, uint8\_\-t $\ast$ {\em buffer}, uint8\_\-t {\em len})}\label{radio_8c_dfb561b37115fd0799d58f86206498b0}
+
+
+\index{radio.c@{radio.c}!_get_status@{\_\-get\_\-status}}
+\index{_get_status@{\_\-get\_\-status}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t \_\-get\_\-status ()}\label{radio_8c_f645100eec00a031bedfcea7fa53bc25}
+
+
+\index{radio.c@{radio.c}!_reset_pipe0_address@{\_\-reset\_\-pipe0\_\-address}}
+\index{_reset_pipe0_address@{\_\-reset\_\-pipe0\_\-address}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void \_\-reset\_\-pipe0\_\-address ()}\label{radio_8c_93648588d763d5039d7a73e5bd278d4e}
+
+
+\index{radio.c@{radio.c}!_set_register@{\_\-set\_\-register}}
+\index{_set_register@{\_\-set\_\-register}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t \_\-set\_\-register ({\bf radio\_\-register\_\-t} {\em reg}, uint8\_\-t $\ast$ {\em value}, uint8\_\-t {\em len})}\label{radio_8c_4f1ae7b6cb0e36b64d11001a9136b35b}
+
+
+\index{radio.c@{radio.c}!_set_rx_mode@{\_\-set\_\-rx\_\-mode}}
+\index{_set_rx_mode@{\_\-set\_\-rx\_\-mode}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void \_\-set\_\-rx\_\-mode ()}\label{radio_8c_9d256b46faa07029a3e9aaa066fe7406}
+
+
+\index{radio.c@{radio.c}!_set_tx_mode@{\_\-set\_\-tx\_\-mode}}
+\index{_set_tx_mode@{\_\-set\_\-tx\_\-mode}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void \_\-set\_\-tx\_\-mode ()}\label{radio_8c_036702f654c8d43e68a6ba5cb634dfb4}
+
+
+\index{radio.c@{radio.c}!ISR@{ISR}}
+\index{ISR@{ISR}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}ISR (INT0\_\-vect)}\label{radio_8c_fea150fcd685610cb9f7672fce361e53}
+
+
+\index{radio.c@{radio.c}!Radio_Configure@{Radio\_\-Configure}}
+\index{Radio_Configure@{Radio\_\-Configure}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Radio\_\-Configure ({\bf RADIO\_\-DATA\_\-RATE} {\em dr}, {\bf RADIO\_\-TX\_\-POWER} {\em power})}\label{radio_8c_2b3992516039b2f97f27c5d05988c679}
+
+
+\index{radio.c@{radio.c}!Radio_Configure_Rx@{Radio\_\-Configure\_\-Rx}}
+\index{Radio_Configure_Rx@{Radio\_\-Configure\_\-Rx}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Radio\_\-Configure\_\-Rx ({\bf RADIO\_\-PIPE} {\em pipe}, uint8\_\-t $\ast$ {\em address}, uint8\_\-t {\em enable})}\label{radio_8c_fb9f368153da34ef7e881cd4ad8047aa}
+
+
+\index{radio.c@{radio.c}!Radio_Drop_Rate@{Radio\_\-Drop\_\-Rate}}
+\index{Radio_Drop_Rate@{Radio\_\-Drop\_\-Rate}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t Radio\_\-Drop\_\-Rate ()}\label{radio_8c_c6d57def1ababd8d3b749b883addc2f4}
+
+
+\index{radio.c@{radio.c}!Radio_Init@{Radio\_\-Init}}
+\index{Radio_Init@{Radio\_\-Init}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Radio\_\-Init ()}\label{radio_8c_92415df413e0db77f4fb15d6a3b18fad}
+
+
+\index{radio.c@{radio.c}!Radio_Receive@{Radio\_\-Receive}}
+\index{Radio_Receive@{Radio\_\-Receive}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}{\bf RADIO\_\-RX\_\-STATUS} Radio\_\-Receive ({\bf radiopacket\_\-t} $\ast$ {\em buffer})}\label{radio_8c_660bc5e5c8e70a0eb3b4a099e8ca3e2f}
+
+
+\index{radio.c@{radio.c}!radio_rxhandler@{radio\_\-rxhandler}}
+\index{radio_rxhandler@{radio\_\-rxhandler}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void radio\_\-rxhandler (uint8\_\-t {\em pipenumber})}\label{radio_8c_13b3742bf3c052776d9061ea792c8456}
+
+
+This function is a hook into the radio's ISR. It is called whenever the radio generates an RX\_\-DR (received data ready) interrupt. \index{radio.c@{radio.c}!Radio_Set_Tx_Addr@{Radio\_\-Set\_\-Tx\_\-Addr}}
+\index{Radio_Set_Tx_Addr@{Radio\_\-Set\_\-Tx\_\-Addr}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Radio\_\-Set\_\-Tx\_\-Addr (uint8\_\-t $\ast$ {\em address})}\label{radio_8c_4045908f305268e06f4ba367f6e82c8a}
+
+
+\index{radio.c@{radio.c}!Radio_Transmit@{Radio\_\-Transmit}}
+\index{Radio_Transmit@{Radio\_\-Transmit}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}uint8\_\-t Radio\_\-Transmit ({\bf radiopacket\_\-t} $\ast$ {\em payload}, {\bf RADIO\_\-TX\_\-WAIT} {\em wait})}\label{radio_8c_144560ba7390873c38539f03423f8a3d}
+
+
+\index{radio.c@{radio.c}!send_instruction@{send\_\-instruction}}
+\index{send_instruction@{send\_\-instruction}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void send\_\-instruction (uint8\_\-t {\em instruction}, uint8\_\-t $\ast$ {\em data}, uint8\_\-t $\ast$ {\em buffer}, uint8\_\-t {\em len})}\label{radio_8c_82033ffab6e1c12a026bdb7f8258b5f3}
+
+
+
+
+\subsection{Variable Documentation}
+\index{radio.c@{radio.c}!rx_pipe0_address@{rx\_\-pipe0\_\-address}}
+\index{rx_pipe0_address@{rx\_\-pipe0\_\-address}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}volatile uint8\_\-t {\bf rx\_\-pipe0\_\-address}[5] = \{ 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 \}}\label{radio_8c_616999e7b15d8684a8979117cb85bbf2}
+
+
+\index{radio.c@{radio.c}!rx_pipe_widths@{rx\_\-pipe\_\-widths}}
+\index{rx_pipe_widths@{rx\_\-pipe\_\-widths}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}volatile uint8\_\-t {\bf rx\_\-pipe\_\-widths}[6] = \{32, 32, 0, 0, 0, 0\}}\label{radio_8c_52892efa0238af933c098955c201a8dd}
+
+
+\index{radio.c@{radio.c}!transmit_lock@{transmit\_\-lock}}
+\index{transmit_lock@{transmit\_\-lock}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}volatile uint8\_\-t {\bf transmit\_\-lock}}\label{radio_8c_50c9b8a9d8a0fb5fa538c8a5fd4e2b94}
+
+
+\index{radio.c@{radio.c}!tx_address@{tx\_\-address}}
+\index{tx_address@{tx\_\-address}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}volatile uint8\_\-t {\bf tx\_\-address}[5] = \{ 0xe7, 0xe7, 0xe7, 0xe7, 0xe7 \}}\label{radio_8c_585f8101b2d4d49cebe1f8d392f408e0}
+
+
+\index{radio.c@{radio.c}!tx_history@{tx\_\-history}}
+\index{tx_history@{tx\_\-history}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}volatile uint16\_\-t {\bf tx\_\-history} = 0x\-FF}\label{radio_8c_5ebf9ffa094e6db24c6e55a3a17e0bdb}
+
+
+\index{radio.c@{radio.c}!tx_last_status@{tx\_\-last\_\-status}}
+\index{tx_last_status@{tx\_\-last\_\-status}!radio.c@{radio.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}volatile {\bf RADIO\_\-TX\_\-STATUS} {\bf tx\_\-last\_\-status} = RADIO\_\-TX\_\-SUCCESS}\label{radio_8c_1e370eaea58a5741d5bc1b7a243473c5}
+
+

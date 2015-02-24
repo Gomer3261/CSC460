@@ -1,0 +1,65 @@
+\section{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/Servo\-Controller.c File Reference}
+\label{_servo_controller_8c}\index{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/ServoController.c@{N:/Documents/RTOS - CSC460/Assignments/Assignment2/Assignment2C/ServoController.c}}
+{\tt \#include \char`\"{}Servo\-Controller.h\char`\"{}}\par
+{\tt \#include $<$util$\backslash$delay.h$>$}\par
+\subsection*{Defines}
+\begin{CompactItemize}
+\item 
+\#define {\bf F\_\-CPU}~8000000UL
+\end{CompactItemize}
+\subsection*{Functions}
+\begin{CompactItemize}
+\item 
+void {\bf Servo\-Initialize} ({\bf Servo\-Control\-Struct} $\ast$SCS)
+\item 
+void {\bf Set\-Servo\-Period} ({\bf Servo\-Control\-Struct} $\ast$SCS, int Microsecond\-Period)
+\item 
+void {\bf Set\-Servo\-Value} ({\bf Servo\-Control\-Struct} $\ast$SCS, int Tenth\-Percent)
+\item 
+void {\bf Add\-Servo\-Value\-Delta} ({\bf Servo\-Control\-Struct} $\ast$SCS, int Tenth\-Percent)
+\item 
+void {\bf Subtract\-Servo\-Value\-Delta} ({\bf Servo\-Control\-Struct} $\ast$SCS, int Tenth\-Percent)
+\item 
+void {\bf Set\-Servo\-Range} ({\bf Servo\-Control\-Struct} $\ast$SCS, int Low, int High)
+\end{CompactItemize}
+
+
+\subsection{Define Documentation}
+\index{ServoController.c@{Servo\-Controller.c}!F_CPU@{F\_\-CPU}}
+\index{F_CPU@{F\_\-CPU}!ServoController.c@{Servo\-Controller.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}\#define F\_\-CPU~8000000UL}\label{_servo_controller_8c_43bafb28b29491ec7f871319b5a3b2f8}
+
+
+
+
+\subsection{Function Documentation}
+\index{ServoController.c@{Servo\-Controller.c}!AddServoValueDelta@{AddServoValueDelta}}
+\index{AddServoValueDelta@{AddServoValueDelta}!ServoController.c@{Servo\-Controller.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Add\-Servo\-Value\-Delta ({\bf Servo\-Control\-Struct} $\ast$ {\em SCS}, int {\em Tenth\-Percent})}\label{_servo_controller_8c_47e5d9700ccc6e36d9f015cda851904c}
+
+
+\index{ServoController.c@{Servo\-Controller.c}!ServoInitialize@{ServoInitialize}}
+\index{ServoInitialize@{ServoInitialize}!ServoController.c@{Servo\-Controller.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Servo\-Initialize ({\bf Servo\-Control\-Struct} $\ast$ {\em SCS})}\label{_servo_controller_8c_ef63c14498220ea2bba7204b7fa58f01}
+
+
+\index{ServoController.c@{Servo\-Controller.c}!SetServoPeriod@{SetServoPeriod}}
+\index{SetServoPeriod@{SetServoPeriod}!ServoController.c@{Servo\-Controller.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Set\-Servo\-Period ({\bf Servo\-Control\-Struct} $\ast$ {\em SCS}, int {\em Microsecond\-Period})}\label{_servo_controller_8c_2f4d592d337741ff4cfd773664e14ad9}
+
+
+\index{ServoController.c@{Servo\-Controller.c}!SetServoRange@{SetServoRange}}
+\index{SetServoRange@{SetServoRange}!ServoController.c@{Servo\-Controller.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Set\-Servo\-Range ({\bf Servo\-Control\-Struct} $\ast$ {\em SCS}, int {\em Low}, int {\em High})}\label{_servo_controller_8c_4e220eb6ef5ca9804b357e2466693007}
+
+
+\index{ServoController.c@{Servo\-Controller.c}!SetServoValue@{SetServoValue}}
+\index{SetServoValue@{SetServoValue}!ServoController.c@{Servo\-Controller.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Set\-Servo\-Value ({\bf Servo\-Control\-Struct} $\ast$ {\em SCS}, int {\em Tenth\-Percent})}\label{_servo_controller_8c_9583f970a0d47759a89616085f9a8636}
+
+
+\index{ServoController.c@{Servo\-Controller.c}!SubtractServoValueDelta@{SubtractServoValueDelta}}
+\index{SubtractServoValueDelta@{SubtractServoValueDelta}!ServoController.c@{Servo\-Controller.c}}
+\subsubsection{\setlength{\rightskip}{0pt plus 5cm}void Subtract\-Servo\-Value\-Delta ({\bf Servo\-Control\-Struct} $\ast$ {\em SCS}, int {\em Tenth\-Percent})}\label{_servo_controller_8c_75963473d80fc1f78554f52e05bdd00c}
+
+
