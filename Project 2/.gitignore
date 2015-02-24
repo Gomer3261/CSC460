@@ -1,0 +1,5 @@
+*.o
+*.zip
+*.elf
+*.bin
+*.hex
