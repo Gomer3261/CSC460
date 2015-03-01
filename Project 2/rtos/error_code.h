@@ -16,25 +16,15 @@
 enum {
 
 /** GREEN ERRORS -- Initialize time errors. */
-    
-/** PPP invalid -- Names must be in range [0 .. MAXPROCESS] */
-ERR_1_PPP_NAME_OUT_OF_RANGE,
 
-/** PERIODIC name is out of range [1 .. MAXNAME] */
-ERR_2_CREATE_NAME_OUT_OF_RANGE,
+/** Period is 0 or less in a periodic task */
+ERR_1_PERIOD_LT_0,
 
-/** PERIODIC task assigned name IDLE */
-ERR_3_PERIODIC_NAMED_IDLE,
+/** Start delay is less than 0 in periodic task */
+ERR_2_START_TIME_LT_0,
 
-/** PERIODIC name already used */
-ERR_4_PERIODIC_NAME_IN_USE,
-
-/** PERIODIC name not in PPP array */
-ERR_5_NAME_NOT_IN_PPP,
-
-/** Time interval 0 in PPP array */
-ERR_6_TIME_INTERVAL_IN_PPP_0,
-
+/** Worst case runtime is greated than period */
+ERR_3_WORST_CASE_GT_PERIOD,
 
 /** RED ERRORS -- Run time errors. */
 
@@ -46,6 +36,9 @@ ERR_RUN_2_TOO_MANY_TASKS,
 
 /** PERIODIC task still running at end of time slot. */
 ERR_RUN_3_PERIODIC_TOOK_TOO_LONG,
+
+/** PERIODIC task collision */
+ERR_RUN_6_PERIODIC_TASK_COLLISION,
 
 /** ISR made a request that only tasks are allowed. */
 ERR_RUN_4_ILLEGAL_ISR_KERNEL_REQUEST,
