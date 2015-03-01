@@ -46,6 +46,13 @@ ERR_RUN_4_ILLEGAL_ISR_KERNEL_REQUEST,
 /** RTOS Internal error in handling request. */
 ERR_RUN_5_RTOS_INTERNAL_ERROR,
 
+/** PERIODIC task attempted to subscribe to a service */
+ERR_RUN_7_PERIODIC_TASK_SUBSCRIBED,
+
+/** PERIODIC task was found subscribed to a service
+ * may happen when a task is destroyed and recreated as periodic before a publish occurs. */
+ERR_RUN_8_PERIODIC_TASK_FOUND_SUBSCRIBED,
+
 };
 
 

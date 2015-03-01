@@ -8,6 +8,11 @@
  * @author Scott Craig
  * @author Justin Tanner
  */
+#ifndef __TASK_DESCRIPTOR__
+#define __TASK_DESCRIPTOR__
+typedef struct td_struct task_descriptor_t;
+#endif
+
 #ifndef __KERNEL_H__
 #define __KERNEL_H__
 
@@ -88,8 +93,6 @@ typedef struct
 }
 create_args_t;
 
-
-typedef struct td_struct task_descriptor_t;
 /**
  * @brief All the data needed to describe the task, including its context.
  */

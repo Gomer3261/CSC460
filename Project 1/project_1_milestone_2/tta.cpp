@@ -1,8 +1,8 @@
 #include "tta.h"
- 
+
 #include "Arduino.h"
 #include <avr/interrupt.h>
- 
+
 typedef struct
 {
   int32_t period;
@@ -10,16 +10,16 @@ typedef struct
   uint8_t is_running;
   task_cb callback;
 } task_t;
- 
+
 task_t tasks[MAXTASKS];
- 
+
 uint32_t last_runtime;
- 
+
 void Scheduler_Init()
 {
 	last_runtime = millis();
 }
- 
+
 void Scheduler_StartTask(int16_t delay, int16_t period, task_cb task)
 {
   static uint8_t id = 0;
@@ -32,17 +32,17 @@ void Scheduler_StartTask(int16_t delay, int16_t period, task_cb task)
     id++;
   }
 }
- 
+
 uint32_t Scheduler_Dispatch()
 {
   uint8_t i;
- 
+
   uint32_t now = millis();
   uint32_t elapsed = now - last_runtime;
   last_runtime = now;
   task_cb t = NULL;
   uint32_t idle_time = 0xFFFFFFFF;
- 
+
   // update each task's remaining time, and identify the first ready task (if there is one).
   for (i = 0; i < MAXTASKS; i++)
   {

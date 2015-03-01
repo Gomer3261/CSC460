@@ -12,6 +12,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <stdlib.h>
 
 #include "os.h"
 #include "kernel.h"
@@ -113,7 +114,7 @@ static void list_remove(list_t* list_ptr, task_descriptor_t* task_to_remove);
 
 /* queues */
 static void enqueue(queue_t* queue_ptr, task_descriptor_t* task_to_add);
-static void pushqueue(queue_t* queue_ptr, task_descriptor_t* task_to_add);
+static void push_queue(queue_t* queue_ptr, task_descriptor_t* task_to_add);
 static task_descriptor_t* dequeue(queue_t* queue_ptr);
 
 static void kernel_update_ticker(void);
@@ -320,11 +321,11 @@ static void kernel_handle_request(void)
 		switch(cur_task->level)
 		{
 	    case SYSTEM:
-	        enqueue(&system_queue, cur_task);
+	        if(cur_task->state == RUNNING) enqueue(&system_queue, cur_task); // Do not enqueue when subscribed.
 			break;
 
 	    case RR:
-	        enqueue(&rr_queue, cur_task);
+	        if(cur_task->state == RUNNING) enqueue(&rr_queue, cur_task); // Do not enqueue when subscribed.
 	        break;
 
 	    default: /* idle or periodic task */
@@ -916,7 +917,7 @@ static void enqueue(queue_t* queue_ptr, task_descriptor_t* task_to_add)
  * @param queue_ptr the queue to insert in
  * @param task_to_add the task descriptor to add
  */
-static void pushqueue(queue_t* queue_ptr, task_descriptor_t* task_to_add)
+static void push_queue(queue_t* queue_ptr, task_descriptor_t* task_to_add)
 {
     task_to_add->next = queue_ptr->head;
     task_to_add->prev = NULL;
@@ -1011,6 +1012,81 @@ static void kernel_slow_clock(void)
     TCCR1B |= (_BV(CS11));
 }
 #endif
+
+
+/*
+ * ================================================================================
+ * ================================================================================
+ * ====================                                        ====================
+ * ====================                Services                ====================
+ * ====================                                        ====================
+ * ================================================================================
+ * ================================================================================
+ */
+
+
+//TODO: WHY AM I USING DYNAMIC MEMORY?! I THINK THIS WILL BREAK THINGS!
+
+
+SERVICE *Service_Init()
+{
+    SERVICE* retval = malloc(sizeof(SERVICE));
+    retval->subscribers.head = NULL;
+    retval->subscribers.tail = NULL;
+    return retval;
+}
+
+void Service_Subscribe( SERVICE *s, int16_t *v )
+{
+    if(cur_task->level == PERIODIC) {
+        error_msg = ERR_RUN_7_PERIODIC_TASK_SUBSCRIBED;
+        OS_Abort();
+    }
+
+    subscribed_list_node_t* node = malloc(sizeof(subscribed_list_node_t));
+    node->next = NULL;
+    node->task = cur_task;
+    node->task->state = WAITING;
+    node->value = v;
+
+    if(s->subscribers.head == NULL) {
+        s->subscribers.head = node;
+        s->subscribers.tail = node;
+    }
+    else {
+        s->subscribers.tail->next = node;
+        s->subscribers.tail = node;
+    }
+
+    Task_Next();
+}
+
+void Service_Publish( SERVICE *s, int16_t v )
+{
+    subscribed_list_node_t* current_node = s->subscribers.head;
+    while(current_node != NULL)
+    {
+        if(current_node->task->state == WAITING) {
+            *(current_node->value) = v;
+            current_node->task->state = READY;
+            if(current_node->task->level == SYSTEM) {
+                push_queue(&system_queue, current_node->task);
+            }
+            else if(current_node->task->level == RR) {
+                push_queue(&rr_queue, current_node->task);
+            } else {
+                error_msg = ERR_RUN_8_PERIODIC_TASK_FOUND_SUBSCRIBED;
+                OS_Abort();
+            }
+        }
+        s->subscribers.head = current_node->next;
+        free(current_node);
+        current_node = s->subscribers.head;
+    }
+    s->subscribers.tail = NULL;
+
+    Task_Next();
+}
 
 
 /*
