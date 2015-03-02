@@ -78,8 +78,8 @@ static list_t periodic_list;
 static queue_t system_queue;
 
 /** Timing data */
-static volatile uint16_t current_tick = 0;
-static volatile uint8_t current_millis = 0;
+static volatile uint16_t previous_tick_time = 0;
+static volatile uint16_t current_tick_multiplied = 0;
 
 /** time remaining in current slot */
 static volatile uint8_t ticks_remaining = 0;
@@ -627,7 +627,8 @@ void TIMER1_COMPA_vect(void)
      * Prepare for next tick interrupt.
      */
     OCR1A += TICK_CYCLES;
-    current_tick++;
+    previous_tick_time += TICK_CYCLES;
+    current_tick_multiplied += 5;
 
     /*
      * Restore the kernel context. (The stack pointer is restored again.)
@@ -1151,18 +1152,15 @@ void OS_Init()
     cur_task->state = RUNNING;
     dequeue(&system_queue);
 
-    current_tick = 0;
-    current_millis = 0;
+    current_tick_multiplied = 0;
 
     /* Set up Timer 1 Output Compare interrupt,the TICK clock. */
     TIMSK1 |= _BV(OCIE1A);
-    OCR1A = TCNT1 + TICK_CYCLES;
+    previous_tick_time = TCNT1;
+    OCR1A = previous_tick_time + TICK_CYCLES;
+
     /* Clear flag. */
     TIFR1 = _BV(OCF1A);
-
-    /*TCCR2B |= (_BV(WGM21)) | (_BV(CS01)) | (_BV(CS00)); // 64 prescale
-    OCR2A = MS_CYCLES; // Output compare register A controls CTC compare value.
-    TIMSK2 |= (_BV(OCIE2A)); // Timer Interrupt Mask Register, is anded with TIFR0 to see which interrupts are enabled.*/
 
     /*
      * The main loop of the RTOS kernel.
@@ -1170,17 +1168,22 @@ void OS_Init()
     kernel_main_loop();
 }
 
-void TIMER0_COMPA_vect(void)
-{
-    current_millis = (current_millis+1)%5;
-}
-
 /**
  *  @Brief return time since operation began in millis.
  */
 uint16_t Now()
 {
-    return current_tick; //(current_tick-1)*5 + current_millis;
+    uint16_t retval = current_tick_multiplied-5;
+    uint16_t cur_time = TCNT1 - previous_tick_time;
+    if(cur_time < MS_CYCLES)
+        return retval;
+    if(cur_time < MS_CYCLES2)
+        return retval+1;
+    if(cur_time < MS_CYCLES3)
+        return retval+2;
+    if(cur_time < MS_CYCLES4)
+        return retval+3;
+    return retval+4;
 }
 
 /**
