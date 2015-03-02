@@ -37,6 +37,10 @@ extern "C" {
 /** The number of clock cycles in one "tick" or 5 ms */
 #define TICK_CYCLES     (((F_CPU / TIMER_PRESCALER) / 1000) * TICK)
 
+/** Using 8bit block so prescale is 64, additionally, want millisecond accuracy, so target frequency is 1000. */
+#define MS_PRESCALER 64
+#define MS_CYCLES       ((F_CPU / MS_PRESCALER) / 1000)
+
 /** LEDs for OS_Abort() */
 #define LED_RED_MASK    (uint8_t)(_BV(4) | _BV(7))
 

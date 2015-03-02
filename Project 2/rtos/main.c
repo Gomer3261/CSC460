@@ -7,15 +7,21 @@
 void foo(){
     DDRB = 1 << PB7;
     for(;;){
-        _delay_ms(1);
-        PORTB ^= 1 << PB7;
+        _delay_ms(500);
+        for(;;) {
+            if(Now()%5 == 3)
+            {
+                PORTB ^= 1 << PB7;
+                break;
+            }
+        }
         Task_Next();
     }
 }
 
 int r_main(){
-    //Task_Create_RR(foo, 100);
-    Task_Create_Periodic(foo, 1, 100, 2, 0);
+    Task_Create_RR(foo, 100);
+    //Task_Create_Periodic(foo, 1, 100, 2, 0);
     return 0;
 }
 
