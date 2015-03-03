@@ -42,11 +42,7 @@ extern "C" {
 #define TICK_CYCLES     (((F_CPU / TIMER_PRESCALER) / 1000) * TICK)
 
 /** LEDs for OS_Abort() */
-#define LED_RED_MASK    (uint8_t)(_BV(4) | _BV(7))
-
-/** LEDs for OS_Abort() */
-#define LED_GREEN_MASK    (uint8_t)(_BV(5) | _BV(6))
-
+#define LED_MASK    (_BV(PB7))
 
 /* Typedefs and data structures. */
 
@@ -111,7 +107,7 @@ struct td_struct
     /** PERIODIC tasks need a known worst case execution time. */
     uint16_t                        wcet;
     /** PERIODIC tasks have a countdown until the next time they run. */
-    uint16_t                        countdown;
+    int16_t                        countdown;
     /** The state of the task in this descriptor. */
     task_state_t                    state;
     /** The argument passed to Task_Create for this task. */

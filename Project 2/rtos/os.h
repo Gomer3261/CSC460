@@ -190,6 +190,9 @@ extern "C" {
 /** thread runtime stack */
 #define MAXSTACK      256   // bytes
 
+/** service runtime pool */
+#define MAXSERVICES  8
+
 /* scheduling levels */
 
 /** a scheduling level: system tasks with first-come-first-served policy
@@ -225,25 +228,19 @@ typedef struct td_struct task_descriptor_t;
 #endif
 
 /** A linked list node of service subscriptions */
-typedef struct subscribed_list_node subscribed_list_node_t;
+typedef struct subscribed_array_item subscribed_array_item_t;
 struct subscribed_list_node {
     task_descriptor_t*      task;
     int16_t*                value;
-    subscribed_list_node_t*   next;
 };
-
-/** A linked list of service subscriptions */
-typedef struct subscribed_list {
-    subscribed_list_node_t*  head;
-    subscribed_list_node_t*  tail;
-} subscribed_list_t;
 
 /** A service descriptor
  * \sa Service_Init().
  */
 typedef struct service SERVICE;
 struct service {
-    subscribed_list_t subscribers;
+    subscribed_array_item_t subscribers[MAXPROCESS];
+    int subscriber_count;
 };
 
 /*================

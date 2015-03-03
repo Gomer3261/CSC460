@@ -17,14 +17,11 @@ enum {
 
 /** GREEN ERRORS -- Initialize time errors. */
 
-/** Period is 0 or less in a periodic task */
-ERR_1_PERIOD_LT_0,
-
-/** Start delay is less than 0 in periodic task */
-ERR_2_START_TIME_LT_0,
-
 /** Worst case runtime is greated than period */
-ERR_3_WORST_CASE_GT_PERIOD,
+ERR_1_WORST_CASE_GT_PERIOD,
+
+/** Maximum services have been initialized. */
+ERR_2_MAX_SERVICES_REACHED,
 
 /** RED ERRORS -- Run time errors. */
 

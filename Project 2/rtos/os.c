@@ -87,6 +87,9 @@ static volatile uint8_t ticks_remaining = 0;
 /** Error message used in OS_Abort() */
 static uint8_t volatile error_msg = ERR_RUN_1_USER_CALLED_OS_ABORT;
 
+static SERVICE services[MAXSERVICES];
+static uint8_t service_count;
+
 
 /*
  * ================================================================================
@@ -212,8 +215,10 @@ static void kernel_dispatch(void)
             if(periodic_task != NULL)
             {
                 cur_task = periodic_task;
-                cur_task->countdown = cur_task->period;
-                ticks_remaining = cur_task->wcet;
+                cur_task->countdown += cur_task->period;
+                if(ticks_remaining == 0) {
+                    ticks_remaining = cur_task->wcet;
+                }
             }
             else if(rr_queue.head != NULL)
             {
@@ -296,6 +301,10 @@ static void kernel_handle_request(void)
             if(kernel_request_create_args.level == SYSTEM && cur_task->level != SYSTEM)
             {
                 cur_task->state = READY;
+                if(cur_task->level == PERIODIC) {
+                    cur_task->countdown -= cur_task->period;
+                    ticks_remaining++; // TODO: This should be smarter.
+                }
             }
 
             /* If cur is RR, it might be pre-empted by a new PERIODIC. */
@@ -327,6 +336,10 @@ static void kernel_handle_request(void)
 	    case SYSTEM:
 	        if(cur_task->state == RUNNING) enqueue(&system_queue, cur_task); // Do not enqueue when subscribed.
 			break;
+
+        case PERIODIC:
+            ticks_remaining = 0;
+            break;
 
 	    case RR:
 	        if(cur_task->state == RUNNING) enqueue(&rr_queue, cur_task); // Do not enqueue when subscribed.
@@ -685,21 +698,9 @@ static int kernel_create_task()
     }
 
     if(kernel_request_create_args.level == PERIODIC &&
-       kernel_request_create_args.period <= 0)
-    {
-        error_msg = ERR_1_PERIOD_LT_0;
-        OS_Abort();
-    }
-    if(kernel_request_create_args.level == PERIODIC &&
-       kernel_request_create_args.start < 0)
-    {
-        error_msg = ERR_2_START_TIME_LT_0;
-        OS_Abort();
-    }
-    if(kernel_request_create_args.level == PERIODIC &&
        kernel_request_create_args.period < kernel_request_create_args.wcet)
     {
-        error_msg = ERR_3_WORST_CASE_GT_PERIOD;
+        error_msg = ERR_1_WORST_CASE_GT_PERIOD;
         OS_Abort();
     }
 
@@ -981,7 +982,10 @@ static void kernel_update_ticker(void)
 
     if(periodic_list.head != NULL)
     {
-        --ticks_remaining;
+        if(cur_task->level != SYSTEM)
+        {
+            --ticks_remaining; // TODO: This is kind of odd... Might want to make smarter.
+        }
 
         if(ticks_remaining == 0)
         {
@@ -1036,9 +1040,12 @@ static void kernel_slow_clock(void)
 
 SERVICE *Service_Init()
 {
-    SERVICE* retval = malloc(sizeof(SERVICE));
-    retval->subscribers.head = NULL;
-    retval->subscribers.tail = NULL;
+    if(service_count >= MAXSERVICES) {
+        error_msg = ERR_2_MAX_SERVICES_REACHED;
+        OS_Abort();
+    }
+    SERVICE* retval = &services[service_count++];
+    retval->subscriber_count = 0;
     return retval;
 }
 
@@ -1049,47 +1056,36 @@ void Service_Subscribe( SERVICE *s, int16_t *v )
         OS_Abort();
     }
 
-    subscribed_list_node_t* node = malloc(sizeof(subscribed_list_node_t));
-    node->next = NULL;
-    node->task = cur_task;
-    node->task->state = WAITING;
-    node->value = v;
+    s->subscribers[s->subscriber_count]->task = cur_task;
+    cur_task->state = WAITING;
+    s->subscribers[s->subscriber_count]->value = v;
 
-    if(s->subscribers.head == NULL) {
-        s->subscribers.head = node;
-        s->subscribers.tail = node;
-    }
-    else {
-        s->subscribers.tail->next = node;
-        s->subscribers.tail = node;
-    }
+    s->subscriber_count++;
 
     Task_Next();
 }
 
 void Service_Publish( SERVICE *s, int16_t v )
 {
-    subscribed_list_node_t* current_node = s->subscribers.head;
-    while(current_node != NULL)
+    for(int i=0; i<s->subscriber_count; i++)
     {
-        if(current_node->task->state == WAITING) {
-            *(current_node->value) = v;
-            current_node->task->state = READY;
-            if(current_node->task->level == SYSTEM) {
-                push_queue(&system_queue, current_node->task);
+        if(s->subscribers[i]->task->state == WAITING) {
+            *(s->subscribers[i]->value) = v;
+            s->subscribers[i]->task->state = READY;
+            if(s->subscribers[i]->task->level == SYSTEM) {
+                push_queue(&system_queue, s->subscribers[i]->task);
             }
-            else if(current_node->task->level == RR) {
-                push_queue(&rr_queue, current_node->task);
+            else if(s->subscribers[i]->task->level == RR) {
+                push_queue(&rr_queue, s->subscribers[i]->task);
             } else {
                 error_msg = ERR_RUN_8_PERIODIC_TASK_FOUND_SUBSCRIBED;
                 OS_Abort();
             }
         }
-        s->subscribers.head = current_node->next;
-        free(current_node);
-        current_node = s->subscribers.head;
+        s->subscribers[i]->task = NULL;
+        s->subscribers[i]->value = NULL;
     }
-    s->subscribers.tail = NULL;
+    s->subscriber_count = 0;
 
     Task_Next();
 }
@@ -1162,6 +1158,8 @@ void OS_Init()
     /* Clear flag. */
     TIFR1 = _BV(OCF1A);
 
+    service_count=0;
+
     /*
      * The main loop of the RTOS kernel.
      */
@@ -1204,53 +1202,69 @@ static void _delay_25ms(void)
 void OS_Abort(void)
 {
     uint8_t i, j;
-    uint8_t flashes, mask;
+    uint8_t flashes;
 
     Disable_Interrupt();
 
     /* Initialize port for output */
-    DDRD = LED_RED_MASK | LED_GREEN_MASK;
+    DDRB = LED_MASK;
 
     if(error_msg < ERR_RUN_1_USER_CALLED_OS_ABORT)
     {
         flashes = error_msg + 1;
-        mask = LED_GREEN_MASK;
     }
     else
     {
         flashes = error_msg + 1 - ERR_RUN_1_USER_CALLED_OS_ABORT;
-        mask = LED_RED_MASK;
     }
 
 
     for(;;)
     {
-        PORTD = (uint8_t)(LED_RED_MASK | LED_GREEN_MASK);
-
-        for(i = 0; i < 100; ++i)
+        PORTB = LED_MASK;
+        if(error_msg < ERR_RUN_1_USER_CALLED_OS_ABORT)
         {
-               _delay_25ms();
+            for(i = 0; i < 100; ++i)
+            {
+                _delay_25ms();
+            }
+        }
+        else
+        {
+            for(i = 0; i < 40; ++i)
+            {
+                _delay_25ms();
+            }
+
+            PORTB = (uint8_t) 0;
+            for(i = 0; i < 20; ++i)
+            {
+                _delay_25ms();
+            }
+
+            PORTB = LED_MASK;
+            for(i = 0; i < 40; ++i)
+            {
+                _delay_25ms();
+            }
         }
 
-        PORTD = (uint8_t) 0;
-
-        for(i = 0; i < 40; ++i)
+        PORTB = (uint8_t) 0;
+        for(i = 0; i < 60; ++i)
         {
-               _delay_25ms();
+            _delay_25ms();
         }
 
 
         for(j = 0; j < flashes; ++j)
         {
-            PORTD = mask;
-
+            PORTB = LED_MASK;
             for(i = 0; i < 10; ++i)
             {
                 _delay_25ms();
             }
 
-            PORTD = (uint8_t) 0;
-
+            PORTB = (uint8_t) 0;
             for(i = 0; i < 10; ++i)
             {
                 _delay_25ms();

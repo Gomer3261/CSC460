@@ -7,14 +7,14 @@
 
 #define PORT_DATADIRECTIONREGISTER  DDRC
 #define PORT_OUT 				    PORTC
-#define PORT_PIN0                   PINC0
-#define PORT_PIN1                   PINC1
-#define PORT_PIN2                   PINC2
-#define PORT_PIN3                   PINC3
-#define PORT_PIN4                   PINC4
-#define PORT_PIN5                   PINC5
-#define PORT_PIN6                   PINC6
-#define PORT_PIN7                   PINC7
+#define PORT_PIN0                   PC0  // 37
+#define PORT_PIN1                   PC1  // 36
+#define PORT_PIN2                   PC2  // 35
+#define PORT_PIN3                   PC3  // 34
+#define PORT_PIN4                   PC4  // 33
+#define PORT_PIN5                   PC5  // 32
+#define PORT_PIN6                   PC6  // 31
+#define PORT_PIN7                   PC7  // 30
 
 #define DefaultPorts() { PORT_DATADIRECTIONREGISTER |= 0xff; }
 
