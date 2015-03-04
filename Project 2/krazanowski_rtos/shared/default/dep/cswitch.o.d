@@ -1,1 +1,0 @@
-cswitch.o: ../cswitch.S
