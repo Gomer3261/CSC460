@@ -17,6 +17,7 @@
 #include "os.h"
 #include "kernel.h"
 #include "error_code.h"
+#include "port_map.h"
 
 #define USE_AVR2560_GREATER 1
 
@@ -87,7 +88,7 @@ static volatile uint8_t ticks_remaining = 0;
 /** Error message used in OS_Abort() */
 static uint8_t volatile error_msg = ERR_RUN_1_USER_CALLED_OS_ABORT;
 
-static SERVICE services[MAXSERVICES];
+static service_t services[MAXSERVICES];
 static uint8_t service_count;
 
 
@@ -330,26 +331,46 @@ static void kernel_handle_request(void)
 		}
         break;
 
+    case TASK_INTERRUPT:
+        if(cur_task->state == RUNNING)
+        {
+            if(cur_task->level != SYSTEM)
+            {
+                cur_task->state = READY;
+                if(cur_task->level == PERIODIC) {
+                    cur_task->countdown -= cur_task->period;
+                    ticks_remaining++; // TODO: This should be smarter.
+                }
+                else {
+                    push_queue(&rr_queue, cur_task);
+                }
+            }
+        }
+        break;
+
     case TASK_NEXT:
-		switch(cur_task->level)
-		{
-	    case SYSTEM:
-	        if(cur_task->state == RUNNING) enqueue(&system_queue, cur_task); // Do not enqueue when subscribed.
-			break;
+        if(cur_task->state == RUNNING)
+        {
+    		switch(cur_task->level)
+    		{
+    	    case SYSTEM:
+    	        enqueue(&system_queue, cur_task); // Do not enqueue when subscribed.
+    			break;
 
-        case PERIODIC:
-            ticks_remaining = 0;
-            break;
+            case PERIODIC:
+                ticks_remaining = 0;
+                break;
 
-	    case RR:
-	        if(cur_task->state == RUNNING) enqueue(&rr_queue, cur_task); // Do not enqueue when subscribed.
-	        break;
+    	    case RR:
+    	        enqueue(&rr_queue, cur_task); // Do not enqueue when subscribed.
+    	        break;
 
-	    default: /* idle or periodic task */
-			break;
-		}
+    	    default: /* idle or periodic task */
+    			break;
+    		}
 
-		cur_task->state = READY;
+    		cur_task->state = READY;
+        }
         break;
 
     case TASK_GET_ARG:
@@ -936,6 +957,7 @@ static void push_queue(queue_t* queue_ptr, task_descriptor_t* task_to_add)
     }
     else
     {
+        queue_ptr->head->prev = task_to_add;
         queue_ptr->head = task_to_add;
     }
 }
@@ -1038,56 +1060,61 @@ static void kernel_slow_clock(void)
 //TODO: WHY AM I USING DYNAMIC MEMORY?! I THINK THIS WILL BREAK THINGS!
 
 
-SERVICE *Service_Init()
+service_t *Service_Init()
 {
     if(service_count >= MAXSERVICES) {
         error_msg = ERR_2_MAX_SERVICES_REACHED;
         OS_Abort();
     }
-    SERVICE* retval = &services[service_count++];
-    retval->subscriber_count = 0;
+    service_t* retval = &services[service_count++];
+    retval->subscribers.head = NULL;
+    retval->subscribers.tail = NULL;
     return retval;
 }
 
-void Service_Subscribe( SERVICE *s, int16_t *v )
+void Service_Subscribe( service_t *s, int16_t *v )
 {
     if(cur_task->level == PERIODIC) {
         error_msg = ERR_RUN_7_PERIODIC_TASK_SUBSCRIBED;
         OS_Abort();
     }
 
-    s->subscribers[s->subscriber_count]->task = cur_task;
+    enqueue(&(s->subscribers), cur_task);
     cur_task->state = WAITING;
-    s->subscribers[s->subscriber_count]->value = v;
-
-    s->subscriber_count++;
+    cur_task->value = v;
 
     Task_Next();
 }
 
-void Service_Publish( SERVICE *s, int16_t v )
+void Service_Publish( service_t *s, int16_t v )
 {
-    for(int i=0; i<s->subscriber_count; i++)
+    int interrupt = 0;
+
+    task_descriptor_t* subscriber = dequeue(&(s->subscribers));
+    while(subscriber != NULL)
     {
-        if(s->subscribers[i]->task->state == WAITING) {
-            *(s->subscribers[i]->value) = v;
-            s->subscribers[i]->task->state = READY;
-            if(s->subscribers[i]->task->level == SYSTEM) {
-                push_queue(&system_queue, s->subscribers[i]->task);
+        if(subscriber->state == WAITING) {
+            *(subscriber->value) = v;
+            subscriber->state = READY;
+            if(subscriber->level == SYSTEM) {
+                if(cur_task->level != SYSTEM) {
+                    interrupt = 1;
+                }
+                push_queue(&system_queue, subscriber);
             }
-            else if(s->subscribers[i]->task->level == RR) {
-                push_queue(&rr_queue, s->subscribers[i]->task);
+            else if(subscriber->level == RR) {
+                push_queue(&rr_queue, subscriber);
             } else {
                 error_msg = ERR_RUN_8_PERIODIC_TASK_FOUND_SUBSCRIBED;
                 OS_Abort();
             }
         }
-        s->subscribers[i]->task = NULL;
-        s->subscribers[i]->value = NULL;
+        subscriber = dequeue(&(s->subscribers));
     }
-    s->subscriber_count = 0;
 
-    Task_Next();
+    if(interrupt) {
+        Task_Interrupt();
+    }
 }
 
 
@@ -1276,6 +1303,19 @@ void OS_Abort(void)
             _delay_25ms();
         }
     }
+}
+
+void Task_Interrupt()
+{
+    uint8_t sreg;
+
+    sreg = SREG;
+    Disable_Interrupt();
+
+    kernel_request = TASK_INTERRUPT;
+    enter_kernel();
+
+    SREG = sreg;
 }
 
 

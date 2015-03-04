@@ -11,6 +11,18 @@
 #ifndef __TASK_DESCRIPTOR__
 #define __TASK_DESCRIPTOR__
 typedef struct td_struct task_descriptor_t;
+
+/**
+ * @brief Contains pointers to head and tail of a linked list.
+ */
+typedef struct
+{
+    /** The first item in the queue. NULL if the queue is empty. */
+    task_descriptor_t*  head;
+    /** The last item in the queue. Undefined if the queue is empty. */
+    task_descriptor_t*  tail;
+}
+queue_t, list_t;
 #endif
 
 #ifndef __KERNEL_H__
@@ -70,6 +82,7 @@ typedef enum
     TASK_CREATE,
     TASK_TERMINATE,
     TASK_NEXT,
+    TASK_INTERRUPT,
     TASK_GET_ARG,
 }
 kernel_request_t;
@@ -118,20 +131,9 @@ struct td_struct
     task_descriptor_t*              prev;
     /** A link to the next task descriptor in the queue holding this task. */
     task_descriptor_t*              next;
+    /** A link to the value to store service posts in. */
+    int16_t*                        value;
 };
-
-
-/**
- * @brief Contains pointers to head and tail of a linked list.
- */
-typedef struct
-{
-    /** The first item in the queue. NULL if the queue is empty. */
-    task_descriptor_t*  head;
-    /** The last item in the queue. Undefined if the queue is empty. */
-    task_descriptor_t*  tail;
-}
-queue_t, list_t;
 
 #ifdef __cplusplus
 }
