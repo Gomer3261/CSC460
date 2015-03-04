@@ -6,61 +6,64 @@
 
 service_t* service;
 
-uint16_t system_value;
-uint16_t rr_value;
+int16_t rr1_value;
+int16_t rr2_value;
 
 void service_publisher(){
+    int16_t previous_publish = 1;
     for(;;) {
         EnablePort0();
-        Service_Publish(service, 255);
+        previous_publish = (previous_publish+1)%2;
+        Service_Publish(service, previous_publish);
         _delay_ms(2);
-        Task_Next();
         DisablePort0();
+        Task_Next();
     }
 }
 
-void system_service_subscriber(){
+void rr_service_subscriber0(){
     for(;;) {
-        EnablePort1();
-        Service_Subscribe(service, &system_value);
-        _delay_ms(2);
         DisablePort1();
-    }
-}
-
-void rr_service_subscriber(){
-    for(;;) {
-        EnablePort2();
-        Service_Subscribe(service, &rr_value);
+        for(;;) {
+            Service_Subscribe(service, &rr1_value);
+            if(rr1_value == 0) {
+                break;
+            }
+        }
+        EnablePort1();
         DisablePort3();
-        DisablePort4();
         _delay_ms(2);
-        DisablePort2();
     }
 }
 
-void rr2(){
+void rr_service_subscriber1(){
     for(;;) {
-        EnablePort3();
-        DisablePort4();
+        DisablePort2();
+        for(;;) {
+            Service_Subscribe(service, &rr1_value);
+            if(rr1_value == 1) {
+                break;
+            }
+        }
+        EnablePort2();
+        DisablePort3();
+        _delay_ms(2);
     }
 }
 
 void rr3(){
     for(;;) {
-        DisablePort3();
-        EnablePort4();
+        EnablePort3();
     }
 }
 
 int r_main(){
     DefaultPorts();
     service = Service_Init();
-    Taks_Create_System(system_service_subscriber, 0);
-    Task_Create_RR(rr_service_subscriber, 0);
-    Task_Create_RR(rr2, 0);
+    Task_Create_RR(rr_service_subscriber0, 0);
+    Task_Create_RR(rr_service_subscriber1, 1);
     Task_Create_RR(rr3, 0);
-    Task_Create_Periodic(service_publisher, 0, 5, 1, 5);
+    Task_Create_Periodic(service_publisher, 0, 3, 1, 5);
     return 0;
 }
 
