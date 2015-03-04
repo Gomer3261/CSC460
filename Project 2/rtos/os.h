@@ -322,9 +322,6 @@ void Task_Terminate();
 /** Voluntarily relinquish the processor. */
 void Task_Next();
 
-/** Force relinquish the processor. Known control should return before next non-system task. */
-void Task_Interrupt();
-
 /** Retrieve the assigned parameter.
   * \sa Task_Create().
   */

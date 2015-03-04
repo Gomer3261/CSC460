@@ -115,6 +115,7 @@ extern /*"C"*/ void TIMER1_COMPA_vect(void) __attribute__ ((signal, naked));
 
 static int kernel_create_task();
 static void kernel_terminate_task(void);
+static void kernel_interrupt_task(void);
 
 /* lists */
 static void list_add(list_t* list_ptr, task_descriptor_t* task_to_add);
@@ -685,7 +686,6 @@ void TIMER1_COMPA_vect(void)
     asm volatile ("ret\n"::);
 }
 
-
 /*
  * ================================================================================
  * ================================================================================
@@ -839,6 +839,19 @@ static void kernel_terminate_task(void)
         list_remove(&periodic_list, cur_task);
     }
     enqueue(&dead_pool_queue, cur_task);
+}
+
+static void kernel_interrupt_task(void)
+{
+    uint8_t sreg;
+
+    sreg = SREG;
+    Disable_Interrupt();
+
+    kernel_request = TASK_INTERRUPT;
+    enter_kernel();
+
+    SREG = sreg;
 }
 
 
@@ -1113,7 +1126,7 @@ void Service_Publish( service_t *s, int16_t v )
     }
 
     if(interrupt) {
-        Task_Interrupt();
+        kernel_interrupt_task();
     }
 }
 
@@ -1303,19 +1316,6 @@ void OS_Abort(void)
             _delay_25ms();
         }
     }
-}
-
-void Task_Interrupt()
-{
-    uint8_t sreg;
-
-    sreg = SREG;
-    Disable_Interrupt();
-
-    kernel_request = TASK_INTERRUPT;
-    enter_kernel();
-
-    SREG = sreg;
 }
 
 
