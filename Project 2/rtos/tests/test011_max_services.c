@@ -4,39 +4,23 @@
 #include "os.h"
 #include "kernel.h"
 
-void now_test(){
+service_t* services;
+
+void task(){
     for(;;){
-        if(Now()%5 == 0) {
-            EnablePort0();
-        } else {
-            DisablePort0();
-        }
-        if(Now()%5 == 1) {
-            EnablePort1();
-        } else {
-            DisablePort1();
-        }
-        if(Now()%5 == 2) {
-            EnablePort2();
-        } else {
-            DisablePort2();
-        }
-        if(Now()%5 == 3) {
-            EnablePort3();
-        } else {
-            DisablePort3();
-        }
-        if(Now()%5 == 4) {
-            EnablePort4();
-        } else {
-            DisablePort4();
-        }
+        EnablePort0();
+        _delay_ms(5);
+        DisablePort0();
     }
 }
 
 int r_main(){
     DefaultPorts();
-    Task_Create_RR(now_test, 100);
+    int i = 0;
+    for(i=0; i<MAXSERVICES+1; i++) {
+        services = Service_Init(); // Initializes too many tasks!
+    }
+    Task_Create_RR(task, 0);
     return 0;
 }
 

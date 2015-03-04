@@ -34,14 +34,14 @@ ERR_RUN_2_TOO_MANY_TASKS,
 /** PERIODIC task still running at end of time slot. */
 ERR_RUN_3_PERIODIC_TOOK_TOO_LONG,
 
-/** PERIODIC task collision */
-ERR_RUN_6_PERIODIC_TASK_COLLISION,
-
 /** ISR made a request that only tasks are allowed. */
 ERR_RUN_4_ILLEGAL_ISR_KERNEL_REQUEST,
 
 /** RTOS Internal error in handling request. */
 ERR_RUN_5_RTOS_INTERNAL_ERROR,
+
+/** PERIODIC task collision */
+ERR_RUN_6_PERIODIC_TASK_COLLISION,
 
 /** PERIODIC task attempted to subscribe to a service */
 ERR_RUN_7_PERIODIC_TASK_SUBSCRIBED,

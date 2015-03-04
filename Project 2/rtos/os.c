@@ -297,7 +297,7 @@ static void kernel_handle_request(void)
         /* Check if new task has higer priority, and that it wasn't an ISR
          * making the request.
          */
-        if(kernel_request_retval)
+        if(kernel_request_retval != NULL)
         {
             /* If new task is SYSTEM and cur is not, then don't run old one */
             if(kernel_request_create_args.level == SYSTEM && cur_task->level != SYSTEM)
@@ -322,6 +322,9 @@ static void kernel_handle_request(void)
             {
                 enqueue(&rr_queue, cur_task);
             }
+        } else {
+            error_msg = ERR_RUN_2_TOO_MANY_TASKS;
+            OS_Abort();
         }
         break;
 
@@ -1037,6 +1040,10 @@ static void kernel_update_ticker(void)
         while(periodic_task != NULL)
         {
             periodic_task->countdown--;
+            if(periodic_task->countdown == 0 && cur_task->level == PERIODIC && cur_task != periodic_task) {
+                error_msg = ERR_RUN_6_PERIODIC_TASK_COLLISION;
+                OS_Abort();
+            }
             periodic_task = periodic_task->next;
         }
     }

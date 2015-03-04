@@ -4,39 +4,28 @@
 #include "os.h"
 #include "kernel.h"
 
-void now_test(){
+void task1(){
     for(;;){
-        if(Now()%5 == 0) {
-            EnablePort0();
-        } else {
-            DisablePort0();
-        }
-        if(Now()%5 == 1) {
-            EnablePort1();
-        } else {
-            DisablePort1();
-        }
-        if(Now()%5 == 2) {
-            EnablePort2();
-        } else {
-            DisablePort2();
-        }
-        if(Now()%5 == 3) {
-            EnablePort3();
-        } else {
-            DisablePort3();
-        }
-        if(Now()%5 == 4) {
-            EnablePort4();
-        } else {
-            DisablePort4();
-        }
+        EnablePort0();
+        _delay_ms(30);
+        DisablePort0();
+        Task_Next();
+    }
+}
+
+void task2(){
+    for(;;){
+        EnablePort1();
+        _delay_ms(4);
+        DisablePort1();
+        Task_Next();
     }
 }
 
 int r_main(){
     DefaultPorts();
-    Task_Create_RR(now_test, 100);
+    Task_Create_Periodic(task1, 0, 10, 7, 0);
+    Task_Create_Periodic(task2, 0, 10, 2, 3);
     return 0;
 }
 
