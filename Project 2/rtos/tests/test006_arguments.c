@@ -9,58 +9,50 @@ service_t* service;
 uint16_t system_value;
 uint16_t rr_value;
 
-void service_publisher(){
-    for(;;) {
-        EnablePort0();
-        Service_Publish(service, 255);
-        _delay_ms(2);
-        Task_Next();
-        DisablePort0();
+void system(){
+    int16_t delay = Task_GetArg();
+    int16_t i;
+    EnablePort0();
+    for(i=0; i<delay; i++) {
+        _delay_ms(1);
     }
+    DisablePort0();
 }
 
-void system_service_subscriber(){
+void periodic(){
+    int16_t delay = Task_GetArg();
+    uint16_t i;
     for(;;) {
         EnablePort1();
-        Service_Subscribe(service, &system_value);
-        _delay_ms(2);
+        for(i=0; i<delay; i++) {
+            _delay_ms(1);
+        }
         DisablePort1();
+        Task_Next();
     }
 }
 
-void rr_service_subscriber(){
+void rr(){
+    int16_t delay = Task_GetArg();
+    int16_t i;
     for(;;) {
         EnablePort2();
-        Service_Subscribe(service, &rr_value);
-        DisablePort3();
-        DisablePort4();
-        _delay_ms(2);
+        for(i=0; i<delay; i++) {
+            _delay_ms(1);
+        }
         DisablePort2();
-    }
-}
-
-void rr2(){
-    for(;;) {
-        EnablePort3();
-        DisablePort4();
-    }
-}
-
-void rr3(){
-    for(;;) {
-        DisablePort3();
-        EnablePort4();
+        for(i=0; i<delay; i++) {
+            _delay_ms(1);
+        }
     }
 }
 
 int r_main(){
     DefaultPorts();
     service = Service_Init();
-    Taks_Create_System(system_service_subscriber, 0);
-    Task_Create_RR(rr_service_subscriber, 0);
-    Task_Create_RR(rr2, 0);
-    Task_Create_RR(rr3, 0);
-    Task_Create_Periodic(service_publisher, )
+    Task_Create_RR(rr, 3);
+    Task_Create_Periodic(periodic, 5, 5, 2, 3);
+    Task_Create_System(system, 7);
     return 0;
 }
 
