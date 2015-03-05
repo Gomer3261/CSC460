@@ -4,6 +4,18 @@
 #include "os.h"
 #include "kernel.h"
 
+/*
+ * This test is designed to prove that the OS will properly exit when a
+ * periodic task attempts to subscribe to a service;
+ */
+
+/* ---- TRACE ----
+ * Defaults all testing output ports
+ * Creates 1 periodic task
+ * tick 0-0ms periodic_task: toggle port 0 on, attempt to subscribe to a service.
+ * ERROR: OS should stop, and begin dispaying error output.
+ */
+
 service_t *service;
 int16_t service_return;
 

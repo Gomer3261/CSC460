@@ -4,6 +4,25 @@
 #include "os.h"
 #include "kernel.h"
 
+/*
+ * This test is designed to test the Now() function in the OS.
+ * The test should display the number of milliseconds that have
+ * passed since the last tick occured via debug ports.
+ */
+
+/* ---- TRACE ----
+ * Defaults all testing output ports
+ * Creates 1 round robin task
+ * loop:
+ *      tick+0-0ms now_test: toggle port 0 on and others off.
+ *      tick+0-1ms now_test: toggle port 1 on and others off.
+ *      tick+0-2ms now_test: toggle port 2 on and others off.
+ *      tick+0-3ms now_test: toggle port 3 on and others off.
+ *      tick+0-4ms now_test: toggle port 4 on and others off.
+ *      tick+1-0ms continue
+ * end
+ */
+
 void now_test(){
     for(;;){
         if(Now()%5 == 0) {

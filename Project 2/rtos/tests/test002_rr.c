@@ -4,6 +4,21 @@
 #include "os.h"
 #include "kernel.h"
 
+/*
+ * This test is designed to test round robin tasks.
+ * The primary goal is to ensure that all tasks run in the correct order.
+ */
+
+/* ---- TRACE ----
+ * Defaults all testing output ports
+ * Creates 3 round robin task
+ * loop:
+ *      tick+0-0ms rr1: toggles debug port 0 on and other ports off
+ *      tick+1-0ms rr2: toggles debug port 1 on and other ports off
+ *      tick+2-0ms rr3: toggles debug port 2 on and other ports off
+ * end
+ */
+
 void rr1(){
     for(;;){
         EnablePort0();

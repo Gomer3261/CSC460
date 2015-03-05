@@ -4,6 +4,17 @@
 #include "os.h"
 #include "kernel.h"
 
+/*
+ * This task is designed to prove that the system works and can execute
+ * a custom task correctly.
+ */
+
+/* ---- TRACE ----
+ * Defaults all testing output ports
+ * Creates a single round robin task
+ *  Round robin toggles debug port 0 with a period of 4 milliseconds.
+ */
+
 void rr(){
     for(;;){
         EnablePort0();

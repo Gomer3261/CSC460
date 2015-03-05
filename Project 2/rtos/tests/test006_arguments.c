@@ -6,8 +6,35 @@
 
 service_t* service;
 
-uint16_t system_value;
-uint16_t rr_value;
+/*
+ * This test is designed to test the ability to pass arguments to
+ * spawned tasks. This is done by adding variable delays to tasks
+ * based on the provided arguments.
+ */
+
+/* ---- TRACE ----
+ * Defaults all testing output ports
+ * Creates 1 system task
+ * Creates 1 periodic task
+ * Creates 1 round robin task
+ * tick 0-0ms system toggle port 0 on;
+ * tick 1-2ms system toggle port 1 off;
+ * loop:
+ *      tick+0-0ms rr: toggle port 2 on;
+ *      tick+0-3ms rr: toggle port 2 off;
+ *      tick+1-1ms rr: continue
+ * end
+ * loop:
+ *      tick+0-0ms periodic: toggle port 1 on.
+ *      tick+1-0ms periodic: toggle port 1 off.
+ *      loop:
+ *          tick+0-0ms rr: toggle port 2 on;
+ *          tick+0-3ms rr: toggle port 2 off;
+ *          tick+1-1ms rr: continue
+ *      end
+ *      tick+5-0ms continue
+ * end
+ */
 
 void system(){
     int16_t delay = Task_GetArg();
@@ -49,7 +76,6 @@ void rr(){
 
 int r_main(){
     DefaultPorts();
-    service = Service_Init();
     Task_Create_RR(rr, 3);
     Task_Create_Periodic(periodic, 5, 5, 2, 3);
     Task_Create_System(system, 7);

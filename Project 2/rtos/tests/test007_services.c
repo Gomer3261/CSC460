@@ -4,6 +4,36 @@
 #include "os.h"
 #include "kernel.h"
 
+/*
+ * This test is designed to test the ability to pass arguments to
+ * spawned tasks. This is done by adding variable delays to tasks
+ * based on the provided arguments.
+ */
+
+/* ---- TRACE ----
+ * Defaults all testing output ports
+ * Creates 1 system task
+ * Creates 1 periodic task
+ * Creates 1 round robin task
+ * tick 0-0ms system toggle port 0 on;
+ * tick 1-2ms system toggle port 1 off;
+ * loop:
+ *      tick+0-0ms rr: toggle port 2 on;
+ *      tick+0-3ms rr: toggle port 2 off;
+ *      tick+1-1ms rr: continue
+ * end
+ * loop:
+ *      tick+0-0ms periodic: toggle port 1 on.
+ *      tick+1-0ms periodic: toggle port 1 off.
+ *      loop:
+ *          tick+0-0ms rr: toggle port 2 on;
+ *          tick+0-3ms rr: toggle port 2 off;
+ *          tick+1-1ms rr: continue
+ *      end
+ *      tick+5-0ms continue
+ * end
+ */
+
 service_t* service;
 
 int16_t system_value;
