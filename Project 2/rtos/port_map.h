@@ -1,5 +1,5 @@
 
-// Use primarily for debuggin. Maps ports to a digital analyzer
+// Use primarily for debugging. Maps ports to a digital analyzer
 // Port0 maps to Pin 30 on the ATMega2560
 // Port7 maps to Pin37 on the ATMega2560
 

@@ -15,7 +15,7 @@
 
 enum {
 
-/** GREEN ERRORS -- Initialize time errors. */
+/** Initialize time errors. */
 
 /** Worst case runtime is greated than period */
 ERR_1_WORST_CASE_GT_PERIOD,
@@ -23,7 +23,7 @@ ERR_1_WORST_CASE_GT_PERIOD,
 /** Maximum services have been initialized. */
 ERR_2_MAX_SERVICES_REACHED,
 
-/** RED ERRORS -- Run time errors. */
+/** Run time errors. */
 
 /** User called OS_Abort() */
 ERR_RUN_1_USER_CALLED_OS_ABORT,
