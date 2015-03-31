@@ -1254,7 +1254,7 @@ void OS_Abort(void)
     Disable_Interrupt();
 
     /* Initialize port for output */
-    DDRB = LED_MASK;
+    DDRB |= LED_MASK;
 
     if(error_msg < ERR_RUN_1_USER_CALLED_OS_ABORT)
     {

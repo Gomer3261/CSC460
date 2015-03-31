@@ -5,6 +5,7 @@
  *      Author: Neil MacMillan
  */
 #include "radio.h"
+#include "port_map.h"
 
 // debug
 #define DEBUG_1_HIGH	PORTH |= _BV(PH3)
@@ -187,7 +188,7 @@ static void reset_pipe0_address()
  * This configures the radio to its max-power, max-packet-header-length settings.  If you want to reduce power consumption
  * or increase on-air payload bandwidth, you'll have to change the config.
  */
-static void configure_registers(int channel)
+static void configure_registers(uint8_t channel)
 {
 	uint8_t value;
 
@@ -224,14 +225,14 @@ static void configure_registers(int channel)
 	send_instruction(FLUSH_RX, NULL, NULL, 0);
 }
 
-void Radio_Init(int channel)
+void Radio_Init(uint8_t channel)
 {
 	transmit_lock = 0;
 	DEBUG_INIT;
 	DEBUG_2_LOW;
 	DEBUG_1_LOW;
-	
-	
+
+
 
 	// disable radio during config
 	CE_LOW();
@@ -493,12 +494,12 @@ ISR(INT4_vect)
 
     	tx_last_status = RADIO_TX_MAX_RT;
     }
-	
+
     // clear the interrupt flags.
 	status = _BV(RX_DR) | _BV(TX_DS) | _BV(MAX_RT);
 	set_register(STATUS, &status, 1);
 	DEBUG_2_HIGH;
-	
+
     CE_HIGH();
 }
 

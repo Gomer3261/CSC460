@@ -18,9 +18,9 @@
 
 typedef enum _pt
 {
-	GAMESTATE,			/// a gamestate update from the base station to the Roomba
-	ROOMBASTATE,		/// a reply from the Roomba, only sent to report a death or revive.
-	MESSAGE					/// a generic message (not implemented by the Roomba)
+	GAMESTATE_PACKET,		/// a gamestate update from the base station to the Roomba
+	ROOMBASTATE_PACKET,		/// a reply from the Roomba, only sent to report a death or revive.
+	MESSAGE_PACKET			/// a generic message (not implemented by the Roomba)
 } PACKET_TYPE;
 
 /*****							Construct payload format structures							*****/
@@ -32,13 +32,14 @@ typedef struct _gs_pkt
 	uint8_t roomba_states[4];
 } pf_gamestate_t;
 
-
+/// Packet for roomba response if the gamestate is incorrect.
 typedef struct _roomba_pkt
 {
 	uint8_t roomba_id;
 	uint8_t roomba_state;
 } pf_roombastate_t;
 
+/// Extranious unused packet from the original provided packet structure.
 typedef struct _msg
 {
 	uint8_t address[5];
