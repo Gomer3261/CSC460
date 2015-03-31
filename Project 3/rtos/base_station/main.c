@@ -16,25 +16,6 @@ int16_t radio_return_service_value;
 
 int radio_power_pin = PL2;
 
-void setup() {
-    // RADIO INITIALIZATION
-    DDRL |= (_BV(radio_power_pin));
-    PORTL &= ~(1 << radio_power_pin);
-    _delay_ms(100);  /* max is 262.14 ms / F_CPU in MHz */
-    PORTL |= 1 << radio_power_pin;
-    _delay_ms(100);
-
-    Radio_Init(BASE_FREQUENCY);
-
-    // configure the receive settings for radio pipe 0
-    Radio_Configure_Rx(RADIO_PIPE_0, BASE_ADDRESS, ENABLE);
-
-    // configure radio transceiver settings.
-    Radio_Configure(RADIO_1MBPS, RADIO_HIGHEST_POWER);
-
-    return;
-}
-
 void sendState() {
     DDRB |= (_BV(PB7));
     PORTB = 0;
@@ -162,14 +143,28 @@ void user_input() {
 }
 
 int r_main(){
+    // RADIO INITIALIZATION
+    DDRL |= (1 << PL2);
+    PORTL &= ~(1 << PL2);
+    _delay_ms(500);  /* max is 262.14 ms / F_CPU in MHz */
+    PORTL |= 1 << PL2;
+    _delay_ms(500);
+
+    Radio_Init(BASE_FREQUENCY);
+
+    // configure the receive settings for radio pipe 0
+    Radio_Configure_Rx(RADIO_PIPE_0, BASE_ADDRESS, ENABLE);
+
+    // configure radio transceiver settings.
+    Radio_Configure(RADIO_1MBPS, RADIO_HIGHEST_POWER);
+
     radio_fire_service = Service_Init();
     radio_return_service = Service_Init();
 
     DefaultPorts();
 
-    Task_Create_System(setup, 0);
     Task_Create_System(sendPacket, 0);
-    Task_Create_System(updateState, 0);
+    //Task_Create_System(updateState, 0);
     Task_Create_Periodic(sendState, 0, 20, 5, 1000);
     Task_Create_RR(user_input, 0);
 
