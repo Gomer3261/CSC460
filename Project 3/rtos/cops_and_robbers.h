@@ -27,6 +27,19 @@ typedef enum _cops_and_robbers {
   ROBBER2 = 3
 } COPS_AND_ROBBERS;
 
+typedef struct _gs_pkt
+{
+  uint8_t game_state; // GAME_STATE
+  uint8_t roomba_states[4]; // DEAD | FORCED
+} pf_gamestate_t;
+
+/// Packet for roomba response if the gamestate is incorrect.
+typedef struct _roomba_pkt
+{
+  uint8_t roomba_id; // COPS_AND_ROBBERS
+  uint8_t roomba_state; // DEAD | FORCED
+} pf_roombastate_t;
+
 extern uint8_t BASE_ADDRESS[5];
 extern uint8_t ROOMBA_ADDRESSES[][5];
 
