@@ -5,9 +5,13 @@
 #include "kernel.h"
 #include "radio.h"
 
-service_t* radio_return_service;
+service_t* radio_receive_service;
+service_t* radio_send_service;
 
-radiopacket_t packet;
+uint8_t roomba_identity = COP1;
+
+pf_gamestate_t current_game_state;
+uint8_t roomba_state;
 
 void setup() {
 
@@ -15,29 +19,86 @@ void setup() {
     return;
 }
 
-void radio_listen() {
+void radio_receive() {
     DDRB |= (_BV(PB7));
     PORTB = 0;
 
+    int16_t radio_receive_service_value;
+
     RADIO_RX_STATUS radio_status;
-    int16_t radio_return_service_value;
+    radiopacket_t in_packet;
 
-    for(;;){
-        Service_Subscribe(radio_return_service, &radio_return_service_value);
+    for(;;) {
+        Service_Subscribe(radio_receive_service, &radio_receive_service_value);
 
-        EnablePort1();
         do {
-            radio_status = Radio_Receive(&packet);
+            radio_status = Radio_Receive(&in_packet);
 
             if(radio_status == RADIO_RX_MORE_PACKETS || radio_status == RADIO_RX_SUCCESS) {
                 // Recieved a packet!
                 //PORTB ^= (_BV(PB7));
-                PORTB ^= (1 << PB7);
+
+                switch(in_packet.type) {
+                    case GAMESTATE_PACKET:
+                        current_game_state = in_packet.payload.gamestate;
+
+                        if(current_game_state.roomba_states[roomba_identity] != roomba_state) {
+                            current_game_state.roomba_states[roomba_identity] = roomba_state;
+                            Service_Publish(radio_send_service, roomba_identity);
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
         } while(radio_status == RADIO_RX_MORE_PACKETS);
+    }
+}
 
-        DisablePort1();
+void radio_send() {
+    int16_t radio_send_service_value;
+
+    RADIO_TX_STATUS radio_status;
+    radiopacket_t out_packet;
+
+    pf_roombastate_t roombastate_command;
+    roombastate_command.roomba_id = roomba_identity;
+
+    Radio_Set_Tx_Addr(BASE_ADDRESS);
+
+    for(;;) {
+        Service_Subscribe(radio_send_service, &radio_send_service_value);
+
+        roombastate_command.roomba_state = roomba_state;
+
+        out_packet.type = ROOMBASTATE_PACKET;
+        memcpy(&out_packet.payload.roombastate, &roombastate_command, sizeof(pf_roombastate_t));
+
+        radio_status = Radio_Transmit(&out_packet, RADIO_RETURN_ON_TX);
+
+        (void)radio_status; //Removed unused warning. :P
+    }
+}
+
+void user_input() {
+    /* Configure PORTB to received digital inputs for pin 12 */
+    DDRB &= ~(_BV(PB6));
+
+    int button_pressed = 0;
+
+    for(;;){
+        PORTB ^= (-(roomba_state & DEAD) ^ PORTB) & (1 << PB7);
+
+        if( !(PINB & (_BV(PB6))) ) {
+            if(button_pressed == 0) {
+                button_pressed = 1;
+                roomba_state ^= DEAD;
+            }
+        }
+        else {
+            button_pressed = 0;
+        }
     }
 }
 
@@ -57,13 +118,15 @@ int r_main(){
     // configure radio transceiver settings.
     Radio_Configure(RADIO_1MBPS, RADIO_HIGHEST_POWER);
 
-    radio_return_service = Service_Init();
+    radio_receive_service = Service_Init();
+    radio_send_service = Service_Init();
 
     DefaultPorts();
 
     //Task_Create_System(setup, 0);
-    Task_Create_RR(radio_listen, 0);
-    //Task_Create_RR(empty_round_robin, 0);
+    Task_Create_System(radio_receive, 0);
+    Task_Create_System(radio_send, 0);
+    Task_Create_RR(user_input, 0);
 
     return 0;
 }
@@ -71,6 +134,7 @@ int r_main(){
 // Called from a radio interrupt.
 void radio_rxhandler(uint8_t pipe_number)
 {
-    Service_Publish(radio_return_service, pipe_number);
+    //PORTB ^= (1 << PB7);
+    Service_Publish(radio_receive_service, pipe_number);
 }
 

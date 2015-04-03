@@ -11,8 +11,8 @@
 
 #include "avr/io.h"
 
-#define DEAD 1
-#define FORCED 2
+#define DEAD 1 << 0
+#define FORCED 1 << 1
 
 typedef enum _game_state {
   GAME_STARTING,
@@ -22,9 +22,9 @@ typedef enum _game_state {
 
 typedef enum _cops_and_robbers {
   COP1 = 0,
-  COP2,
-  ROBBER1,
-  ROBBER2
+  COP2 = 1,
+  ROBBER1 = 2,
+  ROBBER2 = 3
 } COPS_AND_ROBBERS;
 
 extern uint8_t BASE_ADDRESS[5];

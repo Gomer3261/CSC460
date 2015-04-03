@@ -8,61 +8,104 @@
 #define JOYSTICK_X_CHANNEL 0
 #define JOYSTICK_Y_CHANNEL 1
 
-service_t* radio_fire_service;
-int16_t radio_fire_service_value;
+#define RADIO_POWER_PIN PL2
 
-service_t* radio_return_service;
-int16_t radio_return_service_value;
+#define COP1_STATUS_LIGHT PD7 //38
+#define COP2_STATUS_LIGHT PG1 //40
+#define ROBBER1_STATUS_LIGHT PL7 //42
+#define ROBBER2_STATUS_LIGHT PL5 //44
+#define GAMESTATE_RUNNING PL6 //43
+#define GAMESTATE_IDLE_LIGHT PG0 //41
 
-int radio_power_pin = PL2;
+service_t* radio_send_service;
+service_t* radio_receive_service;
 
+pf_gamestate_t current_game_state;
+
+/**
+ * Periodic task that pushes the base station's gamestate to all 4 roombas.
+ */
 void sendState() {
+    //DEBUG
     DDRB |= (_BV(PB7));
     PORTB = 0;
+    //PORTB ^= (-(current_game_state.roomba_states[COP1] & DEAD) ^ PORTB) & (1 << PB7);
+
     for(;;) {
-        EnablePort6();
+
+        // Publish gamestate to each roomba in turn.
         int i;
-        for(i=COP1; i<=COP1/*ROBBER2*/; i++) {
-
-            // The address to which the next transmission is to be sent
-            Radio_Set_Tx_Addr(ROOMBA_ADDRESSES[i]);
-            //TODO: Load data into packet
-            Service_Publish(radio_fire_service, i);
+        for(i=COP1; i<=COP1; i++) {
+            Service_Publish(radio_send_service, i);
         }
-        DisablePort6();
-
-        PORTB ^= (_BV(PB7));
 
         Task_Next();
     }
 }
 
-void sendPacket(){
+/**
+ * Simple task designed to send a single packet.
+ */
+void sendPacket() {
+    int16_t radio_send_service_value;
+
+    RADIO_TX_STATUS radio_status;
     radiopacket_t packet;
-    pf_gamestate_t gamestate_command;
+
     for(;;){
-        Service_Subscribe(radio_fire_service, &radio_fire_service_value);
-        EnablePort7();
+        Service_Subscribe(radio_send_service, &radio_send_service_value);
 
-        Radio_Set_Tx_Addr(ROOMBA_ADDRESSES[COP1]);
+        // Set target roomba
+        Radio_Set_Tx_Addr(ROOMBA_ADDRESSES[radio_send_service_value]);
 
-        // INIITIALIZING PACKET DATA
-        // put some data into the packet
-        gamestate_command.game_state = GAME_STARTING;
-
+        // Set packet data
         packet.type = GAMESTATE_PACKET;
-        memcpy(&packet.payload.message, &gamestate_command, sizeof(pf_gamestate_t));
+        memcpy(&packet.payload.gamestate, &current_game_state, sizeof(pf_gamestate_t));
 
-        uint8_t status = Radio_Transmit(&packet, RADIO_RETURN_ON_TX);
-        DisablePort7();
+        // Fire packet
+        radio_status = Radio_Transmit(&packet, RADIO_RETURN_ON_TX);
+        (void)radio_status; //remove unused warning.
     }
 }
 
-void updateState() {
+/**
+ * Task designed to consume all packets waiting in the radio.
+ */
+void receivePacket() {
+    int16_t radio_receive_service_value;
+
+    RADIO_RX_STATUS radio_status;
+    radiopacket_t in_packet;
+
+    pf_roombastate_t roomba_state;
+
     for(;;){
-        Service_Subscribe(radio_return_service, &radio_return_service_value);
         // Pipe number is in radio_return_service_value
-        //TODO: Consume incomming packets.
+        Service_Subscribe(radio_receive_service, &radio_receive_service_value);
+
+        do {
+            radio_status = Radio_Receive(&in_packet);
+
+            // We recieved a packet.
+            if(radio_status == RADIO_RX_MORE_PACKETS || radio_status == RADIO_RX_SUCCESS) {
+
+                switch(in_packet.type) {
+                    // Handle roomba state change requests.
+                    case ROOMBASTATE_PACKET:
+                        roomba_state = in_packet.payload.roombastate;
+
+                        // A roomba can only change its state if the state isn't forced.
+                        if( (current_game_state.roomba_states[roomba_state.roomba_id] & (FORCED)) == 0) {
+                            current_game_state.roomba_states[roomba_state.roomba_id] = (roomba_state.roomba_state & (DEAD));
+                        }
+                        break;
+                    // Ignore everything else.
+                    default:
+                        break;
+                }
+            }
+
+        } while(radio_status == RADIO_RX_MORE_PACKETS);
     }
 }
 
@@ -72,6 +115,8 @@ void updateState() {
  * On the AT mega2560, there are 16 available channels, thus
  * channel can be any value 0 to 15, which will correspond
  * to the analog input on the arduino board.
+ *
+ * Thanks to Paul Hunter and Justin Guze!
  */
 uint8_t read_analog(int channel) {
     /* Set the three LSB of the Mux value. */
@@ -92,6 +137,9 @@ uint8_t read_analog(int channel) {
     return ADCH;
 }
 
+/**
+ * A Task that periodically polls a joystick for operator control of our game.
+ */
 void user_input() {
     /* Configure PORTB to received digital inputs for pin 12 */
     DDRB &= ~(_BV(PB6));
@@ -108,46 +156,87 @@ void user_input() {
     for(;;){
         EnablePort0();
 
+        // Read joystick down.
         uint8_t analog_value = read_analog(JOYSTICK_X_CHANNEL);
-        if(analog_value < 20) { // Down
+        if(analog_value < 20) {
             EnablePort1();
             _delay_ms(2);
             DisablePort1();
         }
-        if(analog_value > 235) { // Up
+        // Read joystick up.
+        if(analog_value > 235) {
             EnablePort2();
             _delay_ms(2);
             DisablePort2();
         }
 
+        // Read joystick left.
         analog_value = read_analog(JOYSTICK_Y_CHANNEL);
-        if(analog_value < 20) { // Left
+        if(analog_value < 20) {
             EnablePort3();
             _delay_ms(2);
             DisablePort3();
         }
-        if(analog_value > 235) { // Right
+        // Read joystick right.
+        if(analog_value > 235) {
             EnablePort4();
             _delay_ms(2);
             DisablePort4();
         }
 
+        // If the button is pressed
         if( !(PINB & (_BV(PB6))) ) {
-            EnablePort5();
-            _delay_ms(2);
-            DisablePort5();
+            // Starts the game if the game isn't currently running.
+            if(current_game_state.game_state != GAME_RUNNING) {
+                current_game_state.game_state = GAME_RUNNING;
+                int i;
+                for(i=COP1; i<ROBBER2; i++) {
+                    current_game_state.roomba_states[i] = 0;
+                }
+            }
         }
 
         DisablePort0();
     }
 }
 
+/**
+ * A task designed to simply update the onboard leds for the base station.
+ */
+void display_gamestate() {
+    DDRG |= (_BV(PG0)) | (_BV(PG1)) | (_BV(PG2));
+    DDRL |= (_BV(PL5)) | (_BV(PL7));
+    DDRD |= (_BV(PD7));
+
+    PORTG &= ~( (_BV(PG0)) | (_BV(PG1)) | (_BV(PG2)) );
+    PORTL &= ~( (_BV(PL5)) | (_BV(PL7)) );
+    PORTD &= ~(_BV(PD7));
+
+    for(;;) {
+        // Update player status lights
+        PORTD ^= (-(current_game_state.roomba_states[COP1] & DEAD) ^ PORTD) & (1 << COP1_STATUS_LIGHT);
+        PORTG ^= (-(current_game_state.roomba_states[COP2] & DEAD) ^ PORTG) & (1 << COP2_STATUS_LIGHT);
+        PORTL ^= (-(current_game_state.roomba_states[ROBBER1] & DEAD) ^ PORTL) & (1 << ROBBER1_STATUS_LIGHT);
+        PORTL ^= (-(current_game_state.roomba_states[ROBBER2] & DEAD) ^ PORTL) & (1 << ROBBER2_STATUS_LIGHT);
+
+        // Update gamestate status lights
+        PORTL ^= (-((current_game_state.game_state == GAME_RUNNING) ? 1 : 0) ^ PORTL) & (1 << GAMESTATE_RUNNING);
+        PORTG ^= (-((current_game_state.game_state != GAME_RUNNING) ? 1 : 0) ^ PORTG) & (1 << GAMESTATE_IDLE_LIGHT);
+
+        // No need to actually loop, pass control back to another round robin.
+        Task_Next();
+    }
+}
+
+/**
+ * RTOS initialization function.
+ */
 int r_main(){
     // RADIO INITIALIZATION
-    DDRL |= (1 << PL2);
-    PORTL &= ~(1 << PL2);
+    DDRL |= (1 << RADIO_POWER_PIN);
+    PORTL &= ~(1 << RADIO_POWER_PIN);
     _delay_ms(500);  /* max is 262.14 ms / F_CPU in MHz */
-    PORTL |= 1 << PL2;
+    PORTL |= 1 << RADIO_POWER_PIN;
     _delay_ms(500);
 
     Radio_Init(BASE_FREQUENCY);
@@ -158,22 +247,35 @@ int r_main(){
     // configure radio transceiver settings.
     Radio_Configure(RADIO_1MBPS, RADIO_HIGHEST_POWER);
 
-    radio_fire_service = Service_Init();
-    radio_return_service = Service_Init();
+    // GAME INITIALIZATION
+    current_game_state.game_state = GAME_STARTING;
+    int i;
+    for(i=COP1; i<ROBBER2; i++) {
+        current_game_state.roomba_states[i] = 0;
+    }
+
+    // OS INITIALIZATION
+    radio_send_service = Service_Init();
+    radio_receive_service = Service_Init();
 
     DefaultPorts();
 
     Task_Create_System(sendPacket, 0);
-    //Task_Create_System(updateState, 0);
+    Task_Create_System(receivePacket, 0);
     Task_Create_Periodic(sendState, 0, 20, 5, 1000);
     Task_Create_RR(user_input, 0);
+    Task_Create_RR(display_gamestate, 0);
 
     return 0;
 }
 
-// Called from a radio interrupt.
+/**
+ * Interrupt called when the radio recieves a message.
+ */
 void radio_rxhandler(uint8_t pipe_number)
 {
-    Service_Publish(radio_return_service, pipe_number);
+    // Resume the radio recieve task.
+    PORTB ^= (1 << PB7);
+    Service_Publish(radio_receive_service, pipe_number);
 }
 
