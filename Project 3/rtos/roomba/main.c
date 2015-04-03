@@ -8,7 +8,7 @@
 service_t* radio_receive_service;
 service_t* radio_send_service;
 
-uint8_t roomba_identity = COP1;
+uint8_t roomba_identity = COP2;
 
 pf_gamestate_t current_game_state;
 uint8_t roomba_state;
@@ -107,10 +107,10 @@ void user_input() {
     int button_pressed = 0;
 
     for(;;){
-        PORTB ^= (-(roomba_state & DEAD) ^ PORTB) & (1 << PB7);
+        PORTB ^= (-(~roomba_state & DEAD) ^ PORTB) & (1 << PB7);
 
         if( !(PINB & (_BV(PB6))) ) {
-            if(button_pressed == 0) {
+            if(button_pressed == 0 && (roomba_state & FORCED) == 0) {
                 button_pressed = 1;
                 roomba_state ^= DEAD;
             }

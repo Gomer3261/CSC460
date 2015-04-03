@@ -157,23 +157,25 @@ void user_input() {
         EnablePort0();
 
         // Read joystick down.
-        uint8_t analog_value = read_analog(JOYSTICK_X_CHANNEL);
-        if(analog_value < 20) {
-            current_game_state.roomba_states[COP1] = DEAD | FORCED;
-        }
-        // Read joystick up.
-        if(analog_value > 235) {
-            current_game_state.roomba_states[COP2] = DEAD | FORCED;
-        }
+        if(current_game_state.game_state == GAME_RUNNING) {
+            uint8_t analog_value = read_analog(JOYSTICK_X_CHANNEL);
+            if(analog_value < 20) {
+                current_game_state.roomba_states[COP1] = DEAD | FORCED;
+            }
+            // Read joystick up.
+            if(analog_value > 235) {
+                current_game_state.roomba_states[COP2] = DEAD | FORCED;
+            }
 
-        // Read joystick left.
-        analog_value = read_analog(JOYSTICK_Y_CHANNEL);
-        if(analog_value < 20) {
-            current_game_state.roomba_states[ROBBER1] = DEAD | FORCED;
-        }
-        // Read joystick right.
-        if(analog_value > 235) {
-            current_game_state.roomba_states[ROBBER2] = DEAD | FORCED;
+            // Read joystick left.
+            analog_value = read_analog(JOYSTICK_Y_CHANNEL);
+            if(analog_value < 20) {
+                current_game_state.roomba_states[ROBBER1] = DEAD | FORCED;
+            }
+            // Read joystick right.
+            if(analog_value > 235) {
+                current_game_state.roomba_states[ROBBER2] = DEAD | FORCED;
+            }
         }
 
         // If the button is pressed
@@ -182,7 +184,7 @@ void user_input() {
             if(current_game_state.game_state != GAME_RUNNING) {
                 current_game_state.game_state = GAME_RUNNING;
                 int i;
-                for(i=COP1; i<ROBBER2; i++) {
+                for(i=COP1; i<=ROBBER2; i++) {
                     current_game_state.roomba_states[i] = 0;
                 }
             }
@@ -206,7 +208,7 @@ void update_gamestate() {
                 // End the game, force all roombas into their current state.
                 current_game_state.game_state = GAME_OVER;
                 int i;
-                for(i=COP1; i<ROBBER2; i++) {
+                for(i=COP1; i<=ROBBER2; i++) {
                     current_game_state.roomba_states[i] = current_game_state.roomba_states[i] | FORCED;
                 }
 
@@ -270,7 +272,7 @@ int r_main(){
     // GAME INITIALIZATION
     current_game_state.game_state = GAME_STARTING;
     int i;
-    for(i=COP1; i<ROBBER2; i++) {
+    for(i=COP1; i<=ROBBER2; i++) {
         current_game_state.roomba_states[i] = 0;
     }
 
