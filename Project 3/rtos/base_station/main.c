@@ -95,7 +95,7 @@ void receivePacket() {
                         roomba_state = in_packet.payload.roombastate;
 
                         // A roomba can only change its state if the state isn't forced.
-                        if( (current_game_state.roomba_states[roomba_state.roomba_id] & (FORCED)) == 0) {
+                        if( (current_game_state.roomba_states[roomba_state.roomba_id] & FORCED) == 0) {
                             current_game_state.roomba_states[roomba_state.roomba_id] = (roomba_state.roomba_state & (DEAD));
                         }
                         break;
@@ -159,29 +159,21 @@ void user_input() {
         // Read joystick down.
         uint8_t analog_value = read_analog(JOYSTICK_X_CHANNEL);
         if(analog_value < 20) {
-            EnablePort1();
-            _delay_ms(2);
-            DisablePort1();
+            current_game_state.roomba_states[COP1] = DEAD | FORCED;
         }
         // Read joystick up.
         if(analog_value > 235) {
-            EnablePort2();
-            _delay_ms(2);
-            DisablePort2();
+            current_game_state.roomba_states[COP2] = DEAD | FORCED;
         }
 
         // Read joystick left.
         analog_value = read_analog(JOYSTICK_Y_CHANNEL);
         if(analog_value < 20) {
-            EnablePort3();
-            _delay_ms(2);
-            DisablePort3();
+            current_game_state.roomba_states[ROBBER1] = DEAD | FORCED;
         }
         // Read joystick right.
         if(analog_value > 235) {
-            EnablePort4();
-            _delay_ms(2);
-            DisablePort4();
+            current_game_state.roomba_states[ROBBER2] = DEAD | FORCED;
         }
 
         // If the button is pressed
@@ -200,6 +192,26 @@ void user_input() {
     }
 }
 
+void update_gamestate() {
+    for(;;) {
+        switch(current_game_state.game_state) {
+        case GAME_RUNNING:
+            // Check if both members of one team are dead.
+            if( ( (current_game_state.roomba_states[COP1] & DEAD) != 0 && (current_game_state.roomba_states[COP2] & DEAD) != 0) ||
+                ( (current_game_state.roomba_states[ROBBER1] & DEAD) != 0 && (current_game_state.roomba_states[ROBBER2] & DEAD) != 0)) {
+                current_game_state.game_state = GAME_OVER;
+                int i;
+                for(i=COP1; i<ROBBER2; i++) {
+                    current_game_state.roomba_states[i] = current_game_state.roomba_states[i] | FORCED;
+                }
+            }
+        default:
+            break;
+        }
+        Task_Next();
+    }
+}
+
 /**
  * A task designed to simply update the onboard leds for the base station.
  */
@@ -214,10 +226,10 @@ void display_gamestate() {
 
     for(;;) {
         // Update player status lights
-        PORTD ^= (-(current_game_state.roomba_states[COP1] & DEAD) ^ PORTD) & (1 << COP1_STATUS_LIGHT);
-        PORTG ^= (-(current_game_state.roomba_states[COP2] & DEAD) ^ PORTG) & (1 << COP2_STATUS_LIGHT);
-        PORTL ^= (-(current_game_state.roomba_states[ROBBER1] & DEAD) ^ PORTL) & (1 << ROBBER1_STATUS_LIGHT);
-        PORTL ^= (-(current_game_state.roomba_states[ROBBER2] & DEAD) ^ PORTL) & (1 << ROBBER2_STATUS_LIGHT);
+        PORTD ^= (-(~current_game_state.roomba_states[COP1] & DEAD) ^ PORTD) & (1 << COP1_STATUS_LIGHT);
+        PORTG ^= (-(~current_game_state.roomba_states[COP2] & DEAD) ^ PORTG) & (1 << COP2_STATUS_LIGHT);
+        PORTL ^= (-(~current_game_state.roomba_states[ROBBER1] & DEAD) ^ PORTL) & (1 << ROBBER1_STATUS_LIGHT);
+        PORTL ^= (-(~current_game_state.roomba_states[ROBBER2] & DEAD) ^ PORTL) & (1 << ROBBER2_STATUS_LIGHT);
 
         // Update gamestate status lights
         PORTL ^= (-((current_game_state.game_state == GAME_RUNNING) ? 1 : 0) ^ PORTL) & (1 << GAMESTATE_RUNNING);
@@ -264,6 +276,7 @@ int r_main(){
     Task_Create_System(receivePacket, 0);
     Task_Create_Periodic(sendState, 0, 20, 5, 1000);
     Task_Create_RR(user_input, 0);
+    Task_Create_RR(update_gamestate, 0);
     Task_Create_RR(display_gamestate, 0);
 
     return 0;
