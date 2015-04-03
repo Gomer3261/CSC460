@@ -13,12 +13,9 @@ uint8_t roomba_identity = COP1;
 pf_gamestate_t current_game_state;
 uint8_t roomba_state;
 
-void setup() {
-
-
-    return;
-}
-
+/**
+ * Taskt to consume radio messages from the base station.
+ */
 void radio_receive() {
     DDRB |= (_BV(PB7));
     PORTB = 0;
@@ -31,6 +28,7 @@ void radio_receive() {
     for(;;) {
         Service_Subscribe(radio_receive_service, &radio_receive_service_value);
 
+        // Consume all recieved messages from the queue.
         do {
             radio_status = Radio_Receive(&in_packet);
 
@@ -39,12 +37,26 @@ void radio_receive() {
                 //PORTB ^= (_BV(PB7));
 
                 switch(in_packet.type) {
+                    // Handling gamestate packets;
                     case GAMESTATE_PACKET:
                         current_game_state = in_packet.payload.gamestate;
 
-                        if(current_game_state.roomba_states[roomba_identity] != roomba_state) {
-                            current_game_state.roomba_states[roomba_identity] = roomba_state;
-                            Service_Publish(radio_send_service, roomba_identity);
+                        // Roomba is in control of their own state.
+                        if((current_game_state.roomba_states[roomba_identity] & FORCED) == 0) {
+                            // If previously not in control, copy from gamestate.
+                            if((roomba_state & FORCED) != 0) {
+                                roomba_state = current_game_state.roomba_states[roomba_identity];
+                            }
+                            // If gamestate does not match your expectations, update the base station.
+                            else if(current_game_state.roomba_states[roomba_identity] != roomba_state) {
+                                // Update your own gamestate and send a packet.
+                                current_game_state.roomba_states[roomba_identity] = roomba_state;
+                                Service_Publish(radio_send_service, roomba_identity);
+                            }
+                        }
+                        // Just copy your state from the base station.
+                        else {
+                            roomba_state = current_game_state.roomba_states[roomba_identity];
                         }
                         break;
                     default:
@@ -56,7 +68,11 @@ void radio_receive() {
     }
 }
 
+/**
+ * Sends a state message to the base station via radio.
+ */
 void radio_send() {
+    // Setup
     int16_t radio_send_service_value;
 
     RADIO_TX_STATUS radio_status;
@@ -70,17 +86,20 @@ void radio_send() {
     for(;;) {
         Service_Subscribe(radio_send_service, &radio_send_service_value);
 
+        // Assemble packet.
         roombastate_command.roomba_state = roomba_state;
 
         out_packet.type = ROOMBASTATE_PACKET;
         memcpy(&out_packet.payload.roombastate, &roombastate_command, sizeof(pf_roombastate_t));
 
+        // Send packet.
         radio_status = Radio_Transmit(&out_packet, RADIO_RETURN_ON_TX);
 
         (void)radio_status; //Removed unused warning. :P
     }
 }
 
+// TODO: Delete me, the roomba has no user input! FOOL!
 void user_input() {
     /* Configure PORTB to received digital inputs for pin 12 */
     DDRB &= ~(_BV(PB6));
@@ -102,6 +121,9 @@ void user_input() {
     }
 }
 
+/**
+ * Setup function called by the RTOS on initialization.
+ */
 int r_main(){
     // RADIO INITIALIZATION
     DDRL |= (1 << PL2);
@@ -118,12 +140,12 @@ int r_main(){
     // configure radio transceiver settings.
     Radio_Configure(RADIO_1MBPS, RADIO_HIGHEST_POWER);
 
+    // RTOS INITIALIZATION
     radio_receive_service = Service_Init();
     radio_send_service = Service_Init();
 
     DefaultPorts();
 
-    //Task_Create_System(setup, 0);
     Task_Create_System(radio_receive, 0);
     Task_Create_System(radio_send, 0);
     Task_Create_RR(user_input, 0);
@@ -131,7 +153,9 @@ int r_main(){
     return 0;
 }
 
-// Called from a radio interrupt.
+/**
+ * Called whenever a radio message is ready.
+ */
 void radio_rxhandler(uint8_t pipe_number)
 {
     //PORTB ^= (1 << PB7);

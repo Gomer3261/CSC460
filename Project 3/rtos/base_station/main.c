@@ -192,6 +192,9 @@ void user_input() {
     }
 }
 
+/**
+ * Checks if one team is dead within the game. If a team is dead, ends the game.
+ */
 void update_gamestate() {
     for(;;) {
         switch(current_game_state.game_state) {
@@ -199,11 +202,15 @@ void update_gamestate() {
             // Check if both members of one team are dead.
             if( ( (current_game_state.roomba_states[COP1] & DEAD) != 0 && (current_game_state.roomba_states[COP2] & DEAD) != 0) ||
                 ( (current_game_state.roomba_states[ROBBER1] & DEAD) != 0 && (current_game_state.roomba_states[ROBBER2] & DEAD) != 0)) {
+
+                // End the game, force all roombas into their current state.
                 current_game_state.game_state = GAME_OVER;
                 int i;
                 for(i=COP1; i<ROBBER2; i++) {
                     current_game_state.roomba_states[i] = current_game_state.roomba_states[i] | FORCED;
                 }
+
+                // TODO: discuss automatic revive of winning team.
             }
         default:
             break;
@@ -216,6 +223,7 @@ void update_gamestate() {
  * A task designed to simply update the onboard leds for the base station.
  */
 void display_gamestate() {
+    // Set up output registers.
     DDRG |= (_BV(PG0)) | (_BV(PG1)) | (_BV(PG2));
     DDRL |= (_BV(PL5)) | (_BV(PL7));
     DDRD |= (_BV(PD7));
