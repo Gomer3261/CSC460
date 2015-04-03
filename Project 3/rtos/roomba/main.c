@@ -1,14 +1,30 @@
 #include <avr/io.h>
 #include <util/delay.h>
+
+// OPERATING SYSTEM
 #include "port_map.h"
 #include "os.h"
-#include "kernel.h"
+
+// RADIO COMMUNICATION
 #include "radio.h"
 
+// ROOMBA COMMUNICATION
+#include "blocking_uart.h"
+#include "roomba.h"
+#include "roomba_sci.h"
+#include "sensor_struct.h"
+
+// IR CONTROL
+#include "ir.h"
+
+// OS GLOBALS
 service_t* radio_receive_service;
 service_t* radio_send_service;
 
-uint8_t roomba_identity = COP2;
+// ROOMBA CONFIG GLOBALS
+COPS_AND_ROBBERS roomba_identity = COP2;
+IR_TEAM_CODE ir_team = COP_CODE;
+IR_TEAM_CODE ir_enemy = ROBBER_CODE;
 
 pf_gamestate_t current_game_state;
 uint8_t roomba_state;
@@ -160,5 +176,20 @@ void radio_rxhandler(uint8_t pipe_number)
 {
     //PORTB ^= (1 << PB7);
     Service_Publish(radio_receive_service, pipe_number);
+}
+
+/**
+ * Called whenever a proper IR message is recieved.
+ */
+void ir_rxhandler() {
+    uint8_t ir_value = IR_getLast();
+    if((roomba_state & FORCED) == 0) {
+        if (ir_value == ir_team) {
+            roomba_state &= ~DEAD;
+        } else if (ir_value == ir_enemy){
+            roomba_state |= DEAD;
+        }
+    }
+
 }
 

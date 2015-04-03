@@ -27,6 +27,11 @@ typedef enum _cops_and_robbers {
   ROBBER2 = 3
 } COPS_AND_ROBBERS;
 
+typedef enum _ir_teams {
+  COP_CODE = (uint8_t)'B',
+  ROBBER_CODE = (uint8_t)'A'
+} IR_TEAM_CODE;
+
 typedef struct _gs_pkt
 {
   uint8_t game_state; // GAME_STATE
