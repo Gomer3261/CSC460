@@ -17,6 +17,11 @@
 // IR CONTROL
 #include "ir.h"
 
+typedef struct _control_state {
+    int16_t drive_velocity; // Forwards/backwards speed roomba
+    int16_t turn_radius; // Turning speed roomba
+} control_state_t;
+
 // OS GLOBALS
 service_t* radio_receive_service;
 service_t* radio_send_service;
@@ -28,6 +33,9 @@ IR_TEAM_CODE ir_enemy = ROBBER_CODE;
 
 pf_gamestate_t current_game_state;
 uint8_t roomba_state;
+
+roomba_sensor_data_t roomba_sensor_data;
+control_state_t roomba_controls;
 
 /**
  * Taskt to consume radio messages from the base station.
@@ -138,6 +146,46 @@ void user_input() {
 }
 
 /**
+ * Task that reads stored data and makes operation decisions.
+ */
+void decision_making() {
+    for(;;) {
+        //roomba_sensor_data->distance // Sensor in chasis and gives distance to an object
+        //roomba_sensor_data->wall // Sensor on the external of the roomba and says if you hit a wall (there are more for angles on this)
+        switch()
+        if((roomba_state & DEAD) > 0) {
+            roomba_controls.drive_velocity = 0; // setting speed of roomba
+            roomba_controls.turn_radius = 0; // setting radius of roomba turn
+        } else {
+            roomba_controls.drive_velocity = 250;
+            roomba_controls.turn_radius = 0;
+        }
+        Task_Next();
+    }
+}
+
+/**
+ * Roomba interface task
+ */
+void roomba_interface() {
+
+    for(;;) {
+        // Updates the sensors in the roombas chassis
+        //Roomba_UpdateSensorPacket(CHASSIS, &roomba_sensor_data);
+        // Updates the external sensors of the bot
+        //Roomba_UpdateSensorPacket(EXTERNAL, &roomba_sensor_data);
+
+        // Sends the drive command to the roomba.
+        Roomba_Drive(roomba_controls.drive_velocity, -1*roomba_controls.turn_radius);
+
+        // Fires IR.
+        //IR_transmit(ir_team);
+        Task_Next();
+    }
+
+}
+
+/**
  * Setup function called by the RTOS on initialization.
  */
 int r_main(){
@@ -150,11 +198,21 @@ int r_main(){
 
     Radio_Init(BASE_FREQUENCY);
 
-    // configure the receive settings for radio pipe 0
+    // Configure the receive settings for radio pipe 0
     Radio_Configure_Rx(RADIO_PIPE_0, ROOMBA_ADDRESSES[COP1], ENABLE);
 
-    // configure radio transceiver settings.
+    // Configure radio transceiver settings.
     Radio_Configure(RADIO_1MBPS, RADIO_HIGHEST_POWER);
+
+    // IR INITIALIZATION
+    IR_init();
+
+    // ROOMBA INITIALIZATION
+    Roomba_Init();
+
+    // Prevent movement on init.
+    roomba_controls.drive_velocity = 0;
+    roomba_controls.turn_radius = 0;
 
     // RTOS INITIALIZATION
     radio_receive_service = Service_Init();
@@ -164,7 +222,9 @@ int r_main(){
 
     Task_Create_System(radio_receive, 0);
     Task_Create_System(radio_send, 0);
+    Task_Create_Periodic(roomba_interface, 0, 20, 5, 200);
     Task_Create_RR(user_input, 0);
+    Task_Create_RR(decision_making, 0);
 
     return 0;
 }
@@ -183,10 +243,14 @@ void radio_rxhandler(uint8_t pipe_number)
  */
 void ir_rxhandler() {
     uint8_t ir_value = IR_getLast();
+
+    // IR only effects the roomba when state is changable.
     if((roomba_state & FORCED) == 0) {
+        // Revive if shot by a team member.
         if (ir_value == ir_team) {
             roomba_state &= ~DEAD;
-        } else if (ir_value == ir_enemy){
+        // Kill if shot by an enemy.
+        } else if (ir_value == ir_enemy) {
             roomba_state |= DEAD;
         }
     }
