@@ -27,7 +27,8 @@ typedef struct _control_state {
 typedef enum _automation_state {
     STRAIGHT,
     ORBIT,
-    SCARED
+    IS_DEAD,
+    IS_REVIVED
 } automation_state_t;
 
 typedef struct _automation_data {
@@ -170,25 +171,35 @@ void decision_making() {
     roomba_automation_data.distance = 0;
     roomba_automation_data.rotation = 0;
 
+    int rotating = 0;
+
     for(;;) {
-        switch(current_game_state) {
+        switch(current_game_state.game_state) {
             case GAME_STARTING:
+                automation_state = STRAIGHT;
                 roomba_controls.turn_radius = 0x8000; // Straight
                 roomba_controls.drive_velocity = 0; //500 max;
                 roomba_controls.shooting = 0;
                 break;
             case GAME_RUNNING:
+                rotating = 0;
+                // Handle death globally from any state.
+                if((roomba_state & DEAD) != 0) {
+                    automation_state = IS_DEAD;
+                }
                 switch(automation_state) {
+                    // Drive in a straight line for approximately 1 meter.
                     case STRAIGHT:
                         roomba_controls.turn_radius = 0x8000; // Straight
                         roomba_controls.drive_velocity = 300; //500 max;
                         roomba_controls.shooting = 0;
-                        if(roomba_automation_data.distance > 1000 || roomba_sensor_data.wall > 0 || roomba_sensor_data.light_bumber > 0) {
+                        if(roomba_automation_data.distance > 1000 || (roomba_sensor_data.bumps_wheeldrops & 0x3) > 0 || roomba_sensor_data.light_bumber > 0) {
                             automation_state = ORBIT;
                             roomba_automation_data.rotation = 0;
                             roomba_automation_data.distance = 0;
                         }
                         break;
+                    // Rotate 270 degrees clockwise.
                     case ORBIT:
                         roomba_controls.drive_velocity = 100;
                         roomba_controls.turn_radius = 1; // On spot clockwise.
@@ -199,20 +210,53 @@ void decision_making() {
                             roomba_automation_data.distance = 0;
                         }
                         break;
-                    case SCARED:
+                    // Cannot move, stay in place.
+                    case IS_DEAD:
                         roomba_controls.drive_velocity = 0;
                         roomba_controls.turn_radius = 0;
                         roomba_controls.shooting = 0;
+                        if((roomba_state & DEAD) == 0) {
+                            automation_state = IS_REVIVED;
+                            roomba_automation_data.rotation = 0;
+                            roomba_automation_data.distance = 0;
+                        }
                         break;
+                    // Revent spree! Rotate 720 degrees counter clockwise spamming shoost!
+                    case IS_REVIVED:
+                        roomba_controls.drive_velocity = 250;
+                        roomba_controls.turn_radius = -1; // On spot cclockwise.
+                        roomba_controls.shooting = 1;
+                        if(roomba_automation_data.rotation >= 710) {
+                            automation_state = STRAIGHT;
+                            roomba_automation_data.rotation = 0;
+                            roomba_automation_data.distance = 0;
+                        }
                 }
                 break;
             case GAME_OVER:
+
+
+                automation_state = STRAIGHT;
+                // Victory dance! (rotate on the spot)
                 if((roomba_state & DEAD) == 0) {
-                    roomba_controls.turn_radius = -1; // Straight
+                    roomba_controls.turn_radius = -1; // Clockwise
                     roomba_controls.drive_velocity = 200; //500 max;
+                // Loosers corner! (shake head back and forth.)
                 } else {
-                    roomba_controls.turn_radius = 0x8000; // Straight
-                    roomba_controls.drive_velocity = 0; //500 max;
+                    if(rotating == 0) {
+                        rotating = 1;
+                        roomba_controls.turn_radius = 1; // Clockwise
+                        roomba_controls.drive_velocity = 100;
+                        break;
+                    }
+
+                    if(roomba_automation_data.rotation >= 10) {
+                        roomba_controls.turn_radius = 1; // cClockwise
+                        roomba_controls.drive_velocity = 100;
+                    } else if(roomba_automation_data.rotation <= -10) {
+                        roomba_controls.turn_radius = -1; // Clockwise
+                        roomba_controls.drive_velocity = 100;
+                    }
                 }
                 roomba_controls.shooting = 0;
                 break;
@@ -249,12 +293,12 @@ void roomba_interface() {
         m_sensor_stage = (m_sensor_stage+1) % 3;
 
         // Sends the drive command to the roomba.
-        Roomba_Drive(roomba_controls.drive_velocity, -1*roomba_controls.turn_radius); // 3ms
+        //Roomba_Drive(roomba_controls.drive_velocity, -1*roomba_controls.turn_radius); // 3ms
 
         // Fires IR.
-        if(roomba_controls.shooting != 0) {
+        //if(roomba_controls.shooting != 0) {
             IR_transmit(ir_team); // 6ms
-        }
+        //}
 
         Task_Next();
     }
@@ -320,11 +364,14 @@ void radio_rxhandler(uint8_t pipe_number)
 void ir_rxhandler() {
     uint8_t ir_value = IR_getLast();
 
+    PORTB ^= (1 << PB7);
+
     // IR only effects the roomba when state is changable.
     if((roomba_state & FORCED) == 0) {
         // Revive if shot by a team member.
         if (ir_value == ir_team) {
             roomba_state &= ~DEAD;
+            PORTB ^= (1 << PB7);
         // Kill if shot by an enemy.
         } else if (ir_value == ir_enemy) {
             roomba_state |= DEAD;
