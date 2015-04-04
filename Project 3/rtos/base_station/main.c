@@ -273,7 +273,7 @@ int r_main(){
     current_game_state.game_state = GAME_STARTING;
     int i;
     for(i=COP1; i<=ROBBER2; i++) {
-        current_game_state.roomba_states[i] = 0;
+        current_game_state.roomba_states[i] = FORCED;
     }
 
     // OS INITIALIZATION
@@ -284,7 +284,7 @@ int r_main(){
 
     Task_Create_System(sendPacket, 0);
     Task_Create_System(receivePacket, 0);
-    Task_Create_Periodic(sendState, 0, 20, 5, 1000);
+    Task_Create_Periodic(sendState, 0, 50, 5, 1000); // 4 times a second.
     Task_Create_RR(user_input, 0);
     Task_Create_RR(update_gamestate, 0);
     Task_Create_RR(display_gamestate, 0);

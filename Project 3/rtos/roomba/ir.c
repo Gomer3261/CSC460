@@ -156,7 +156,7 @@ void IR_transmit(uint8_t data) {
 
 	mark();
 	space();
-	int i;
+    int i;
 	for(i = 0; i < 8; i++) {
 		if(((data >> i) & 0x1)) {
 			mark();

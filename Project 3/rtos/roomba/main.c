@@ -279,6 +279,11 @@ void roomba_interface() {
                 Roomba_UpdateSensorPacket(CHASSIS, &roomba_sensor_data); // 10.5ms
                 roomba_automation_data.distance += 120;// roomba_sensor_data.distance.value; Doesn't work on our firmware
                 roomba_automation_data.rotation += roomba_sensor_data.angle.value*3;
+
+                // Fire IR
+                if(roomba_controls.shooting != 0) {
+                    IR_transmit(ir_team);
+                }
                 break;
             case 1:
                 Roomba_UpdateSensorPacket(EXTERNAL, &roomba_sensor_data); // 17ms
@@ -293,12 +298,7 @@ void roomba_interface() {
         m_sensor_stage = (m_sensor_stage+1) % 3;
 
         // Sends the drive command to the roomba.
-        //Roomba_Drive(roomba_controls.drive_velocity, -1*roomba_controls.turn_radius); // 3ms
-
-        // Fires IR.
-        //if(roomba_controls.shooting != 0) {
-            IR_transmit(ir_team); // 6ms
-        //}
+        Roomba_Drive(roomba_controls.drive_velocity, -1*roomba_controls.turn_radius); // 3ms
 
         Task_Next();
     }
@@ -364,18 +364,18 @@ void radio_rxhandler(uint8_t pipe_number)
 void ir_rxhandler() {
     uint8_t ir_value = IR_getLast();
 
-    PORTB ^= (1 << PB7);
-
     // IR only effects the roomba when state is changable.
     if((roomba_state & FORCED) == 0) {
         // Revive if shot by a team member.
         if (ir_value == ir_team) {
-            roomba_state &= ~DEAD;
             PORTB ^= (1 << PB7);
+            roomba_state &= ~DEAD;
         // Kill if shot by an enemy.
         } else if (ir_value == ir_enemy) {
+            PORTB ^= (1 << PB7);
             roomba_state |= DEAD;
         }
+        _delay_ms(1);
     }
 
 }
