@@ -1,5 +1,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 // OPERATING SYSTEM
 #include "port_map.h"
@@ -18,9 +19,21 @@
 #include "ir.h"
 
 typedef struct _control_state {
+    uint8_t shooting;
     int16_t drive_velocity; // Forwards/backwards speed roomba
     int16_t turn_radius; // Turning speed roomba
 } control_state_t;
+
+typedef enum _automation_state {
+    STRAIGHT,
+    ORBIT,
+    SCARED
+} automation_state_t;
+
+typedef struct _automation_data {
+    int16_t distance;
+    int16_t rotation;
+} automation_data_t;
 
 // OS GLOBALS
 service_t* radio_receive_service;
@@ -35,7 +48,10 @@ pf_gamestate_t current_game_state;
 uint8_t roomba_state;
 
 roomba_sensor_data_t roomba_sensor_data;
+automation_data_t roomba_automation_data;
 control_state_t roomba_controls;
+
+
 
 /**
  * Taskt to consume radio messages from the base station.
@@ -131,7 +147,7 @@ void user_input() {
     int button_pressed = 0;
 
     for(;;){
-        PORTB ^= (-(~roomba_state & DEAD) ^ PORTB) & (1 << PB7);
+        //PORTB ^= (-(~roomba_state & DEAD) ^ PORTB) & (1 << PB7);
 
         if( !(PINB & (_BV(PB6))) ) {
             if(button_pressed == 0 && (roomba_state & FORCED) == 0) {
@@ -142,6 +158,7 @@ void user_input() {
         else {
             button_pressed = 0;
         }
+        Task_Next();
     }
 }
 
@@ -149,17 +166,58 @@ void user_input() {
  * Task that reads stored data and makes operation decisions.
  */
 void decision_making() {
+    automation_state_t automation_state = STRAIGHT;
+    roomba_automation_data.distance = 0;
+    roomba_automation_data.rotation = 0;
+
     for(;;) {
-        //roomba_sensor_data->distance // Sensor in chasis and gives distance to an object
-        //roomba_sensor_data->wall // Sensor on the external of the roomba and says if you hit a wall (there are more for angles on this)
-        switch()
-        if((roomba_state & DEAD) > 0) {
-            roomba_controls.drive_velocity = 0; // setting speed of roomba
-            roomba_controls.turn_radius = 0; // setting radius of roomba turn
-        } else {
-            roomba_controls.drive_velocity = 250;
-            roomba_controls.turn_radius = 0;
+        switch(current_game_state) {
+            case GAME_STARTING:
+                roomba_controls.turn_radius = 0x8000; // Straight
+                roomba_controls.drive_velocity = 0; //500 max;
+                roomba_controls.shooting = 0;
+                break;
+            case GAME_RUNNING:
+                switch(automation_state) {
+                    case STRAIGHT:
+                        roomba_controls.turn_radius = 0x8000; // Straight
+                        roomba_controls.drive_velocity = 300; //500 max;
+                        roomba_controls.shooting = 0;
+                        if(roomba_automation_data.distance > 1000 || roomba_sensor_data.wall > 0 || roomba_sensor_data.light_bumber > 0) {
+                            automation_state = ORBIT;
+                            roomba_automation_data.rotation = 0;
+                            roomba_automation_data.distance = 0;
+                        }
+                        break;
+                    case ORBIT:
+                        roomba_controls.drive_velocity = 100;
+                        roomba_controls.turn_radius = 1; // On spot clockwise.
+                        roomba_controls.shooting = 1;
+                        if(roomba_automation_data.rotation <= -260) {
+                            automation_state = STRAIGHT;
+                            roomba_automation_data.rotation = 0;
+                            roomba_automation_data.distance = 0;
+                        }
+                        break;
+                    case SCARED:
+                        roomba_controls.drive_velocity = 0;
+                        roomba_controls.turn_radius = 0;
+                        roomba_controls.shooting = 0;
+                        break;
+                }
+                break;
+            case GAME_OVER:
+                if((roomba_state & DEAD) == 0) {
+                    roomba_controls.turn_radius = -1; // Straight
+                    roomba_controls.drive_velocity = 200; //500 max;
+                } else {
+                    roomba_controls.turn_radius = 0x8000; // Straight
+                    roomba_controls.drive_velocity = 0; //500 max;
+                }
+                roomba_controls.shooting = 0;
+                break;
         }
+
         Task_Next();
     }
 }
@@ -168,18 +226,36 @@ void decision_making() {
  * Roomba interface task
  */
 void roomba_interface() {
+    int m_sensor_stage = 0;
 
     for(;;) {
-        // Updates the sensors in the roombas chassis
-        //Roomba_UpdateSensorPacket(CHASSIS, &roomba_sensor_data);
-        // Updates the external sensors of the bot
-        //Roomba_UpdateSensorPacket(EXTERNAL, &roomba_sensor_data);
+        // Updates the sensors structure. Alternates which sensors to check from based on runtime.
+        switch(m_sensor_stage) {
+            case 0:
+                Roomba_UpdateSensorPacket(CHASSIS, &roomba_sensor_data); // 10.5ms
+                roomba_automation_data.distance += 120;// roomba_sensor_data.distance.value; Doesn't work on our firmware
+                roomba_automation_data.rotation += roomba_sensor_data.angle.value*3;
+                break;
+            case 1:
+                Roomba_UpdateSensorPacket(EXTERNAL, &roomba_sensor_data); // 17ms
+                break;
+            case 2:
+                Roomba_UpdateSensorPacket(LIGHT_SENSOR, &roomba_sensor_data); // 25ms
+                break;
+            default:
+                OS_Abort();
+                break;
+        }
+        m_sensor_stage = (m_sensor_stage+1) % 3;
 
         // Sends the drive command to the roomba.
-        Roomba_Drive(roomba_controls.drive_velocity, -1*roomba_controls.turn_radius);
+        Roomba_Drive(roomba_controls.drive_velocity, -1*roomba_controls.turn_radius); // 3ms
 
         // Fires IR.
-        //IR_transmit(ir_team);
+        if(roomba_controls.shooting != 0) {
+            IR_transmit(ir_team); // 6ms
+        }
+
         Task_Next();
     }
 
@@ -199,7 +275,7 @@ int r_main(){
     Radio_Init(BASE_FREQUENCY);
 
     // Configure the receive settings for radio pipe 0
-    Radio_Configure_Rx(RADIO_PIPE_0, ROOMBA_ADDRESSES[COP1], ENABLE);
+    Radio_Configure_Rx(RADIO_PIPE_0, ROOMBA_ADDRESSES[roomba_identity], ENABLE);
 
     // Configure radio transceiver settings.
     Radio_Configure(RADIO_1MBPS, RADIO_HIGHEST_POWER);
@@ -222,7 +298,7 @@ int r_main(){
 
     Task_Create_System(radio_receive, 0);
     Task_Create_System(radio_send, 0);
-    Task_Create_Periodic(roomba_interface, 0, 20, 5, 200);
+    Task_Create_Periodic(roomba_interface, 0, 20, 8, 200);
     Task_Create_RR(user_input, 0);
     Task_Create_RR(decision_making, 0);
 
