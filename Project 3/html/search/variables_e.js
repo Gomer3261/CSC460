@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['radio_5freceive_5fservice',['radio_receive_service',['../db/d7e/base__station_2main_8c.html#a5cce058e51ef6a8335b22d271eafbe0b',1,'radio_receive_service():&#160;main.c'],['../d2/dc2/roomba_2main_8c.html#a5cce058e51ef6a8335b22d271eafbe0b',1,'radio_receive_service():&#160;main.c']]],
+  ['radio_5fsend_5fservice',['radio_send_service',['../db/d7e/base__station_2main_8c.html#a769e1afc3a25336ecaa2cf31c2c42000',1,'radio_send_service():&#160;main.c'],['../d2/dc2/roomba_2main_8c.html#a769e1afc3a25336ecaa2cf31c2c42000',1,'radio_send_service():&#160;main.c']]],
+  ['remote_5fopcode',['remote_opcode',['../d4/d2f/structroomba__sensor__data__t.html#a2811e3231a43164dc1b8958ef72d244d',1,'roomba_sensor_data_t']]],
+  ['right_5fcenter_5flight_5fbumber_5fsignal',['right_center_light_bumber_signal',['../d4/d2f/structroomba__sensor__data__t.html#a8ba6ab83132553ae7cb030bcc5e50d51',1,'roomba_sensor_data_t']]],
+  ['right_5fencoder_5fcounts',['right_encoder_counts',['../d4/d2f/structroomba__sensor__data__t.html#a5a28719ad5b4009c6609a31a03338fec',1,'roomba_sensor_data_t']]],
+  ['right_5ffront_5flight_5fbumber_5fsignal',['right_front_light_bumber_signal',['../d4/d2f/structroomba__sensor__data__t.html#a1d782a9e15655ef14c8b206b8a3c3bcd',1,'roomba_sensor_data_t']]],
+  ['right_5flight_5fbumber_5fsignal',['right_light_bumber_signal',['../d4/d2f/structroomba__sensor__data__t.html#a6789c17e6685b58abf6d32592937c56d',1,'roomba_sensor_data_t']]],
+  ['right_5fmotor_5fcurrent',['right_motor_current',['../d4/d2f/structroomba__sensor__data__t.html#a086f600693cc44f86904e41af072e573',1,'roomba_sensor_data_t']]],
+  ['roomba_5faddresses',['ROOMBA_ADDRESSES',['../db/df9/cops__and__robbers_8c.html#a93e8081bf08f24fe48339d7fd1e6b062',1,'ROOMBA_ADDRESSES():&#160;cops_and_robbers.c'],['../d7/df7/cops__and__robbers_8h.html#aa789c256d2075862fd02b2a2516ec06b',1,'ROOMBA_ADDRESSES():&#160;cops_and_robbers.c']]],
+  ['roomba_5fautomation_5fdata',['roomba_automation_data',['../d2/dc2/roomba_2main_8c.html#af7977948890db9f7bf26b4095d985246',1,'main.c']]],
+  ['roomba_5fcontrols',['roomba_controls',['../d2/dc2/roomba_2main_8c.html#ac1deda07f04df611a66d00660f1c6e70',1,'main.c']]],
+  ['roomba_5ffrequencies',['ROOMBA_FREQUENCIES',['../db/df9/cops__and__robbers_8c.html#aef2506e4fd06cd78f4df988d5d489876',1,'ROOMBA_FREQUENCIES():&#160;cops_and_robbers.c'],['../d7/df7/cops__and__robbers_8h.html#a6238427532ef2b6dcb0bebf98e0ed13e',1,'ROOMBA_FREQUENCIES():&#160;cops_and_robbers.c']]],
+  ['roomba_5fid',['roomba_id',['../d7/d55/struct__roomba__pkt.html#a4396dd5f5a98666bb1bc52eb8c9b0dc9',1,'_roomba_pkt']]],
+  ['roomba_5fidentity',['roomba_identity',['../d2/dc2/roomba_2main_8c.html#a520099d4290a2ba6de14bc1291c9859b',1,'main.c']]],
+  ['roomba_5fsensor_5fdata',['roomba_sensor_data',['../d2/dc2/roomba_2main_8c.html#a0f995868264818b0a49173257de15142',1,'main.c']]],
+  ['roomba_5fstate',['roomba_state',['../d7/d55/struct__roomba__pkt.html#a2d02577a6afa7922b84c3aba18cfcc06',1,'_roomba_pkt::roomba_state()'],['../d2/dc2/roomba_2main_8c.html#a2d02577a6afa7922b84c3aba18cfcc06',1,'roomba_state():&#160;main.c']]],
+  ['roomba_5fstates',['roomba_states',['../d9/d8c/struct__gs__pkt.html#a2276edf52c5ddf19f7cba21bb4c04e64',1,'_gs_pkt']]],
+  ['roombastate',['roombastate',['../d5/d02/union__pf.html#a853684e930f50d294d0ff62c199e4d5e',1,'_pf']]],
+  ['rotation',['rotation',['../d1/de2/struct__automation__data.html#a1508d373d2e4b395dd7cba0c5ae90319',1,'_automation_data']]]
+];
