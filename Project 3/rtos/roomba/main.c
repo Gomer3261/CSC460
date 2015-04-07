@@ -41,9 +41,9 @@ service_t* radio_receive_service;
 service_t* radio_send_service;
 
 // ROOMBA CONFIG GLOBALS
-COPS_AND_ROBBERS roomba_identity = COP2;
-IR_TEAM_CODE ir_team = COP_CODE;
-IR_TEAM_CODE ir_enemy = ROBBER_CODE;
+COPS_AND_ROBBERS roomba_identity = ROBBER1;
+IR_TEAM_CODE ir_team = ROBBER_CODE;
+IR_TEAM_CODE ir_enemy = COP_CODE;
 
 pf_gamestate_t current_game_state;
 uint8_t roomba_state;

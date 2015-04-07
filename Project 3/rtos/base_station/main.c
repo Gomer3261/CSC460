@@ -277,10 +277,10 @@ int r_main(){
     }
 
     // OS INITIALIZATION
+    DefaultPorts();
+
     radio_send_service = Service_Init();
     radio_receive_service = Service_Init();
-
-    DefaultPorts();
 
     Task_Create_System(sendPacket, 0);
     Task_Create_System(receivePacket, 0);
